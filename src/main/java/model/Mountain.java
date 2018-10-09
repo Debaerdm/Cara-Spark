@@ -55,6 +55,9 @@ public class Mountain implements Serializable {
 
 	public Mountain(String name) {
 		this.name = name;
+		dungeonByIP.put("test1", new Dungeon("dungeon 1"));
+		dungeonByIP.put("test2", new Dungeon("dungeon 2"));
+		dungeonByIP.put("test3", new Dungeon("dungeon 3"));
 	}
 
 	public String getName() {
@@ -63,6 +66,10 @@ public class Mountain implements Serializable {
 
 	public void addDungeon(String ip) {
 		dungeonByIP.put(ip, new Dungeon("Donjon de "+ip));
+	}
+	
+	public Map<String, Dungeon> getDungeonsMap() {
+		return dungeonByIP;
 	}
 
 }

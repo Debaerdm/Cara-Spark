@@ -7,7 +7,7 @@ import java.util.Map;
 public class Dungeon implements Serializable {
 
 	private static final long serialVersionUID = -7230098702843143534L;
-	private String name;
+	public String name;
 	private Tile[][] map;
 	private Map<ItemType, Integer> itemInventory = new HashMap<ItemType, Integer>();
 
