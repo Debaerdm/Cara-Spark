@@ -2,7 +2,6 @@ package model;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -53,7 +52,7 @@ public class Mountain implements Serializable {
 		} 
 	}
 
-	public Mountain(String name) {
+	private Mountain(String name) {
 		this.name = name;
 		dungeonByIP.put("test1", new Dungeon("dungeon 1"));
 		dungeonByIP.put("test2", new Dungeon("dungeon 2"));

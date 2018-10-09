@@ -1,4 +1,4 @@
-var app = angular.module('todoapp', [
+var app = angular.module('DungeonLords', [
     'ngCookies',
     'ngResource',
     'ngSanitize',
@@ -7,7 +7,7 @@ var app = angular.module('todoapp', [
 
 app.config(function ($routeProvider) {
     $routeProvider.when('/', {
-        templateUrl: 'views/moutainList.html',
+        templateUrl: 'views/mountainList.html',
         controller: 'MountainsList'
     }).otherwise({
         redirectTo: '/'
@@ -15,9 +15,9 @@ app.config(function ($routeProvider) {
 });
 
 app.controller('MountainsList', function ($scope, $http) {
-    $http.get('/api/v1/moutain').success(function (data) {
+    $http.get('/api/mountain').success(function (data) {
         console.log(data);
-        $scope.todos = data;
+        $scope.dungeons.name = data;
     }).error(function (data, status) {
         console.log('Error ' + data)
     })

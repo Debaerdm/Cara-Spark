@@ -3,7 +3,7 @@ import model.Mountain;
 import static spark.Spark.get;
 
 public class MountainResource {
-    private static final String API_CONTEXT = "/api/v1";
+    private static final String API_CONTEXT = "/api";
 
     public MountainResource() {
         setupEndpoints();
