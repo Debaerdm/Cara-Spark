@@ -74,6 +74,7 @@ public class Mountain implements Serializable {
 
 	public void addDungeon(String ip) {
 		dungeonByIP.put(ip, new Dungeon("Donjon de "+ip));
+		System.out.println("Added dungeon for IP ("+ip+")");
 	}
 	
 	public Map<String, Dungeon> getDungeonsMap() {

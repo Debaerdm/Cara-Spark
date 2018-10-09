@@ -13,17 +13,19 @@ public class MountainResource {
 	private void setupEndpoints() {
 		get(API_CONTEXT + "/mountain", "application/json", (request, response) -> Mountain.getInstance().getDungeonsMap(), new JsonTransformer());
 
-		get(API_CONTEXT + "/join", "application/json", ((request, response) -> {
-			if (Mountain.getInstance().getDungeonsMap().containsKey(request.ip())) {
+		post(API_CONTEXT + "/join", "application/json", ((request, response) -> {
+			if (!Mountain.getInstance().getDungeonsMap().containsKey(request.ip())) {
 				Mountain.getInstance().addDungeon(request.ip());
+			} else {
+				System.out.println("No dungeon added, there was already one for ip : ("+request.ip()+")");
 			}
 
 			request.session().attribute(request.ip(), "testIP");
-			response.redirect(API_CONTEXT+"/dungeon");
+			response.redirect("/#/dungeon");
 			return "";
 		}), new JsonTransformer());
 		
-		get(API_CONTEXT + "/dungeon", "application/json", (request, response) -> request.session().attribute(request.ip()));
+		get(API_CONTEXT + "/dungeon", "application/json", (request, response) -> Mountain.getInstance().getDungeonsMap().get(request.ip()).getMap());
 	}
 
 }

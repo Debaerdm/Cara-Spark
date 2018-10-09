@@ -29,6 +29,10 @@ public class Dungeon implements Serializable {
 	public String getName() {
 		return name;
 	}
+	
+	public Tile[][] getMap() {
+		return map;
+	}
 
 	public void build(BuildingType type, int row, int col) {
 		map[row][col] = new Building(type);
