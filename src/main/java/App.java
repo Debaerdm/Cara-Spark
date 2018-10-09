@@ -1,9 +1,13 @@
-import static spark.Spark.get;
+import model.Mountain;
+
+import static spark.Spark.*;
 
 public class App {
 
 	public static void main(String[] args) {
-        get("/", (req, res) -> { return "Hello World!!"; });
+	    port(4567);
+	    staticFileLocation("/public");
+	    new MountainResource(new Mountain("Test"));
     }
 
 }
