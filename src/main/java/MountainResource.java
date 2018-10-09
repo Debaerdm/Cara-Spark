@@ -10,7 +10,7 @@ public class MountainResource {
     }
 
     private void setupEndpoints() {
-        get(API_CONTEXT + "/mountain", "application/json", (request, response) -> Mountain.getInstance().getName(), new JsonTransformer());
+        get(API_CONTEXT + "/mountain", "application/json", (request, response) -> Mountain.getInstance().getDungeonsMap(), new JsonTransformer());
 
         /*put(API_CONTEXT + "/todos/:id", "application/json", (request, response)
 

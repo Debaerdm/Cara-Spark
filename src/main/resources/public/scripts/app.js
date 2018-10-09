@@ -17,7 +17,7 @@ app.config(function ($routeProvider) {
 app.controller('MountainsList', function ($scope, $http) {
     $http.get('/api/mountain').success(function (data) {
         console.log(data);
-        $scope.dungeons.name = data;
+        $scope.dungeons = data;
     }).error(function (data, status) {
         console.log('Error ' + data)
     })

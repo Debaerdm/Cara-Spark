@@ -20,6 +20,7 @@ public class Mountain implements Serializable {
 	public static Mountain getInstance() {
 		if (instance == null) {
 			instance = new Mountain("The Mountain");
+			System.out.println("No mountain found, travelling to the closest mountain to settle the dungeons.");
 		}
 		return instance;
 	}
@@ -33,6 +34,7 @@ public class Mountain implements Serializable {
 				output.writeObject(instance);
 				output.close();
 				fileOut.close();
+				System.out.println("Serialization done.");
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -48,7 +50,7 @@ public class Mountain implements Serializable {
 	        in.close();
 	        file.close();
 		} catch (IOException | ClassNotFoundException e) {
-			e.printStackTrace();
+			/* Do nothing, getInstance() will return a new Mountain when called for the first time */
 		} 
 	}
 
@@ -57,6 +59,7 @@ public class Mountain implements Serializable {
 		dungeonByIP.put("test1", new Dungeon("dungeon 1"));
 		dungeonByIP.put("test2", new Dungeon("dungeon 2"));
 		dungeonByIP.put("test3", new Dungeon("dungeon 3"));
+		serialize();
 	}
 
 	public String getName() {
