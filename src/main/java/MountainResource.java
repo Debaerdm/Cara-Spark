@@ -17,12 +17,13 @@ public class MountainResource {
 			if (Mountain.getInstance().getDungeonsMap().containsKey(request.ip())) {
 				Mountain.getInstance().addDungeon(request.ip());
 			}
-			request.attribute("ip", "testIP");
-			response.redirect("/dungeon");
+
+			request.session().attribute(request.ip(), "testIP");
+			response.redirect(API_CONTEXT+"/dungeon");
 			return "";
 		}), new JsonTransformer());
 		
-		get(API_CONTEXT + "/dungeon", "application/json", (request, response) -> request.attribute("ip"));
+		get(API_CONTEXT + "/dungeon", "application/json", (request, response) -> request.session().attribute(request.ip()));
 	}
 
 }

@@ -27,7 +27,7 @@ app.controller('DungeonController', function($scope, $http) {
 
 app.controller('JoinController', function($scope, $http) {
     $scope.join = function() {
-        $http.post('/api/join', null).success(function (data) {
+        $http.get('/api/join').success(function (data) {
             $scope.dungeon = data;
         }).error(function (data, status) {
             console.log('Error ' + data)
