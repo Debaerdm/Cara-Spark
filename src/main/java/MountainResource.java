@@ -13,7 +13,7 @@ public class MountainResource {
 	private void setupEndpoints() {
 		get(API_CONTEXT + "/mountain", "application/json", (request, response) -> Mountain.getInstance().getDungeonsMap(), new JsonTransformer());
 
-		post(API_CONTEXT + "/join", "application/json", ((request, response) -> {
+		get(API_CONTEXT + "/join", "application/json", ((request, response) -> {
 			if (!Mountain.getInstance().getDungeonsMap().containsKey(request.ip())) {
 				Mountain.getInstance().addDungeon(request.ip());
 			} else {

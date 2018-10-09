@@ -1,3 +1,5 @@
-<ul class="flex-container" multiple='true' ng-repeat='tileRow in map track by $row'>
-  <li class="flex-item" multiple='true' ng-repeat='tile in tileRow track by $col'>[-]</li>
-</ul>
+<table class="flex-container">
+	<tr ng-repeat="row in map">
+		<td class="flex-item" ng-repeat="col in row">{{map[row][col]}}</td>
+	</tr>
+</table>
