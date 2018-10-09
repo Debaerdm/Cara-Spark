@@ -18,7 +18,7 @@ public class Mountain implements Serializable {
 	private Map<String, Dungeon> dungeonByIP = new HashMap<String, Dungeon>();
 	private static Mountain instance;
 
-	private static Mountain getInstance() {
+	public static Mountain getInstance() {
 		if (instance == null) {
 			instance = new Mountain("The Mountain");
 		}
