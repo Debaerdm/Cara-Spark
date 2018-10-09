@@ -1,7 +1,6 @@
 import model.Mountain;
 
 import static spark.Spark.get;
-import static spark.Spark.post;
 
 public class MountainResource {
 	private static final String API_CONTEXT = "/api";
@@ -11,7 +10,7 @@ public class MountainResource {
 	}
 
 	private void setupEndpoints() {
-		get(API_CONTEXT + "/mountain", "application/json", (request, response) -> Mountain.getInstance().getDungeonsMap(), new JsonTransformer());
+		get(API_CONTEXT + "/mountain", "application/json", (request, response) -> Mountain.getInstance().getDungeonsMap(), JsonTransformer.getInstance());
 
 		get(API_CONTEXT + "/join", "application/json", ((request, response) -> {
 			if (!Mountain.getInstance().getDungeonsMap().containsKey(request.ip())) {
@@ -23,9 +22,9 @@ public class MountainResource {
 			request.session().attribute(request.ip(), "testIP");
 			response.redirect("/#/dungeon");
 			return "";
-		}), new JsonTransformer());
+		}), JsonTransformer.getInstance());
 		
-		get(API_CONTEXT + "/dungeon", "application/json", (request, response) -> Mountain.getInstance().getDungeonsMap().get(request.ip()).getMap());
+		get(API_CONTEXT + "/dungeon", "application/json", (request, response) -> JsonTransformer.getInstance().render(Mountain.getInstance().getDungeonsMap().get(request.ip()).getMap()));
 	}
 
 }

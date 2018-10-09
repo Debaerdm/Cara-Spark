@@ -23,6 +23,11 @@ public class Building extends Tile {
 		return type.getImagePath();
 	}
 
+	@Override
+	public boolean isWall() {
+		return true;
+	}
+
 	public boolean isWorking() {
 		return isWorking;
 	}

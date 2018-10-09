@@ -3,15 +3,20 @@ package model;
 public class EmptyTile extends Tile {
 
 	private static final long serialVersionUID = 205427117422667286L;
-	private boolean isWall;
 
-	public EmptyTile(boolean isWall) {
+	EmptyTile(boolean isWall) {
 		this.isWall = isWall;
+		this.imagePath = isWall ? "wall.png" : "ground.png";
 	}
 
 	@Override
 	public String getImagePath() {
-		return isWall ? "wall.png" : "ground.png";
+		return this.imagePath;
+	}
+
+	@Override
+	public boolean isWall() {
+		return this.isWall;
 	}
 
 }

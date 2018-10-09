@@ -1,5 +1,11 @@
-<table class="flex-container">
-	<tr ng-repeat="row in map">
-		<td class="flex-item" ng-repeat="col in row">{{map[row][col]}}</td>
-	</tr>
+<table class="table table-hover">
+    <div class="container">
+        <div class="row">
+            <div ng-repeat="array in map">
+                <div ng-repeat="item in array track by $index">
+                    {{item.imagePath}}
+                </div>
+            </div>
+        </div>
+    </div>
 </table>
