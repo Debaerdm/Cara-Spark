@@ -15,7 +15,8 @@ app.config(function ($routeProvider) {
 });
 
 app.controller('MountainsList', function ($scope, $http) {
-    $http.get('/api/v1/moutains').success(function (data) {
+    $http.get('/api/v1/moutain').success(function (data) {
+        console.log(data);
         $scope.todos = data;
     }).error(function (data, status) {
         console.log('Error ' + data)
