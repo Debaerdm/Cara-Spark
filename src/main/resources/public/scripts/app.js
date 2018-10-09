@@ -9,15 +9,23 @@ app.config(function ($routeProvider) {
     $routeProvider.when('/', {
         templateUrl: 'views/mountainList.html',
         controller: 'MountainsList'
-    }).when('/join', {
-        controller: 'join'
+    }).when('/dungeon', {
+        templateUrl: 'views/dungeonView.html',
+    	controller: 'DungeonController'
     }).otherwise({
         redirectTo: '/'
     })
 });
 
+app.controller('DungeonController', function($scope, $http) {
+	$http.get('/api/dungeon').success(function (data) {
+		$scope.ip = data;
+	}).error(function (data, status) {
+        console.log('Error ' + data)
+    })
+});
+
 app.controller('JoinController', function($scope, $http) {
-    $scope.dungeon = "No dungeon";
     $scope.join = function() {
         $http.post('/api/join', null).success(function (data) {
             $scope.dungeon = data;
