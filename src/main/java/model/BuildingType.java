@@ -16,6 +16,19 @@ public enum BuildingType {
 		this.productionTime = productionTime;
 	}
 
+	public static BuildingType create(ItemType itemType) {
+		switch (itemType) {
+			case GEMS:
+				return BuildingType.GEMS_MINE;
+			case GOLD:
+				return BuildingType.GOLD_MINE;
+			case ROCK:
+				return BuildingType.ROCK_MINE;
+		}
+
+		return null;
+	}
+
 	public String getImagePath() {
 		return imagePath;
 	}

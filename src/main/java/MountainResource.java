@@ -1,5 +1,10 @@
-import model.ItemType;
-import model.Mountain;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import model.*;
+
+import java.lang.reflect.Type;
+import java.util.Arrays;
+import java.util.Map;
 
 import static spark.Spark.get;
 import static spark.Spark.post;
@@ -33,7 +38,21 @@ public class MountainResource {
 		get(API_CONTEXT+"/itemTypes", ACCEPT_TYPE, (request, response) -> ItemType.values(), JsonTransformer.getInstance());
 
 		post(API_CONTEXT+"/build", ACCEPT_TYPE,  (request, response) -> {
-			System.out.println(request.body());
+            System.out.println(request.ip());
+			Dungeon dungeon = Mountain.getInstance().getDungeonsMap().get(request.ip());
+
+            Type type = new TypeToken<Map<String, Object>>(){}.getType();
+			Map<String, Object> map = new Gson().fromJson(request.body(), type);
+
+            System.out.println(map.toString());
+
+            String item = (String) map.get("buildItem");
+
+            if(!item.equals("dirt")) {
+                BuildingType buildingType = BuildingType.create(ItemType.valueOf(item));
+
+                dungeon.build(buildingType, (int) map.get("row"), (int) map.get("col"));
+            }
 			return 200;
 		}, JsonTransformer.getInstance());
 	}
