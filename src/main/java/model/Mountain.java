@@ -51,7 +51,7 @@ public class Mountain implements Serializable {
 	        file.close();
 		} catch (IOException | ClassNotFoundException e) {
 			/* Do nothing, getInstance() will return a new Mountain when called for the first time */
-		} 
+		}
 	}
 
 	private Mountain(String name) {
@@ -76,7 +76,7 @@ public class Mountain implements Serializable {
 		dungeonByIP.put(ip, new Dungeon("Donjon de "+ip));
 		System.out.println("Added dungeon for IP ("+ip+")");
 	}
-	
+
 	public Map<String, Dungeon> getDungeonsMap() {
 		return dungeonByIP;
 	}

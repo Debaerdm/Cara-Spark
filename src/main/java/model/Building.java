@@ -6,26 +6,20 @@ import java.util.TimerTask;
 public class Building extends Tile {
 
 	private static final long serialVersionUID = 1681946032634725905L;
+	private Dungeon dungeon;
 	private BuildingType type;
 	private boolean isWorking;
 	private int nbOfItems = 0;
 
-	public Building(BuildingType type) {
+	public Building(Dungeon dungeon, BuildingType type) {
+		this.dungeon = dungeon;
 		this.type = type;
+		isWall = false;
+		imagePath = type.getImagePath();
 	}
 
 	public BuildingType getBuildingType() {
 		return type;
-	}
-
-	@Override
-	public String getImagePath() {
-		return type.getImagePath();
-	}
-
-	@Override
-	public boolean isWall() {
-		return true;
 	}
 
 	public boolean isWorking() {
@@ -52,6 +46,10 @@ public class Building extends Tile {
 		int temp = nbOfItems;
 		nbOfItems = 0;
 		return temp;
+	}
+
+	public void update() {
+		imagePath = type.getImagePath();
 	}
 
 }

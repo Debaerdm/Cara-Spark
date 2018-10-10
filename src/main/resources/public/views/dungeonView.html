@@ -1,9 +1,7 @@
-<table class="table">
-    <div class="container">
-        <tr ng-repeat="array in map">
-            <td ng-repeat="item in array track by $index">
-                <img src="resources/{{item.imagePath}}">
-            </td>
-        </tr>
-    </div>
-</table>
+
+
+<ul class="flex-container" ng-repeat="array in map">
+	<li class="flex-item" ng-repeat="item in array">
+		<img src="images/{{item.imagePath}}">
+	</li>
+</ul>

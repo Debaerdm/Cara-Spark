@@ -23,8 +23,8 @@ public class MountainResource {
 			response.redirect("/#/dungeon");
 			return "";
 		}), JsonTransformer.getInstance());
-		
-		get(API_CONTEXT + "/dungeon", "application/json", (request, response) -> JsonTransformer.getInstance().render(Mountain.getInstance().getDungeonsMap().get(request.ip()).getMap()));
+
+		get(API_CONTEXT + "/dungeon", "application/json", (request, response) -> Mountain.getInstance().getDungeonsMap().get(request.ip()).getMap(), JsonTransformer.getInstance());
 	}
 
 }
