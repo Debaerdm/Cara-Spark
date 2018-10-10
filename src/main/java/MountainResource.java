@@ -1,3 +1,4 @@
+import com.sun.deploy.net.HttpResponse;
 import model.Mountain;
 
 import static spark.Spark.get;
@@ -19,14 +20,11 @@ public class MountainResource {
 				System.out.println("No dungeon added, there was already one for ip : ("+request.ip()+")");
 			}
 
-			request.session().attribute(request.ip(), "testIP");
 			response.redirect("/#/dungeon");
-			return "";
+			return 200;
 		}), JsonTransformer.getInstance());
 
-		get(API_CONTEXT + "/dungeon", "application/json", ((request, response) -> {
-			return Mountain.getInstance().getDungeonsMap().get(request.ip()).getMap(); 
-		}), JsonTransformer.getInstance());
+		get(API_CONTEXT + "/dungeon", "application/json", (request, response) -> Mountain.getInstance().getDungeonsMap().get(request.ip()).getMap(), JsonTransformer.getInstance());
 		
 		get(API_CONTEXT + "/dungeon_total", "application/json", (request, response) -> Mountain.getInstance().getDungeonsMap().keySet().size(), JsonTransformer.getInstance());
 	}

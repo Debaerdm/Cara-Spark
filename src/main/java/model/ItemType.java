@@ -4,6 +4,6 @@ public enum ItemType {
 
 	ROCK,
 	GOLD,
-	GEMS;
+	GEMS
 
 }
