@@ -11,7 +11,8 @@ public class Building extends Tile {
 	private boolean isWorking;
 	private int nbOfItems = 0;
 
-	public Building(Dungeon dungeon, BuildingType type) {
+	public Building(Dungeon dungeon, BuildingType type, int row, int col) {
+		super(row, col);
 		this.dungeon = dungeon;
 		this.type = type;
 		isWall = false;

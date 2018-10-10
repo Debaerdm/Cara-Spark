@@ -4,12 +4,9 @@ public class EmptyTile extends Tile {
 
 	private static final long serialVersionUID = 205427117422667286L;
 	private transient Dungeon dungeon;
-	private int row;
-	private int col;
 
 	EmptyTile(Dungeon dungeon, boolean isWall, int row, int col) {
-		this.row = row;
-		this.col = col;
+		super(row, col);
 		this.dungeon = dungeon;
 		this.isWall = isWall;
 	}
@@ -36,7 +33,6 @@ public class EmptyTile extends Tile {
 			+ (southwest ? "7" : "")
 			+ (west ? "8" : "")
 			+".png";
-			System.out.println(imagePath);
 		}
 	}
 

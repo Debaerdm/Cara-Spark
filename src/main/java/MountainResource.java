@@ -24,7 +24,12 @@ public class MountainResource {
 			return "";
 		}), JsonTransformer.getInstance());
 
-		get(API_CONTEXT + "/dungeon", "application/json", (request, response) -> Mountain.getInstance().getDungeonsMap().get(request.ip()).getMap(), JsonTransformer.getInstance());
+		get(API_CONTEXT + "/dungeon", "application/json", ((request, response) -> {
+			return Mountain.getInstance().getDungeonsMap().get(request.ip()).getMap(); 
+		}), JsonTransformer.getInstance());
+		
+		get(API_CONTEXT + "/dungeon_total", "application/json", (request, response) -> Mountain.getInstance().getDungeonsMap().keySet().size(), JsonTransformer.getInstance());
 	}
-
+	
 }
+

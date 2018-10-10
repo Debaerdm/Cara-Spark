@@ -48,7 +48,7 @@ public class Dungeon implements Serializable {
 	}
 
 	public void build(BuildingType type, int row, int col) {
-		map[row][col] = new Building(this, type);
+		map[row][col] = new Building(this, type, row, col);
 	}
 
 	public void collect(int row, int col) {
