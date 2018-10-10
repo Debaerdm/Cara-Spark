@@ -14,8 +14,33 @@
 }
 
 .flex-container {
-  display: flex;
-  justify-content: center;
+	display: flex;
+	justify-content: center;
+}
+
+#tiles {
+	width: 100%;
+	margin: auto;
+}
+
+#menu {
+	display: flex;
+	justify-content: center;
+	width: 100%;
+	margin: auto;
+}
+
+.btn {
+	margin-left: 5px;
+	margin-right: 5px;
+}
+
+.flex-item {
+	transition: box-shadow .3s;
+}
+
+.flex-item:hover {
+	box-shadow: 0 0 15px rgba(128,35,11,.6);
 }
 
 .dungeon-total {

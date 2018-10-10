@@ -1,7 +1,12 @@
-<p>total = {{total}}</p>
+<div class="row" >
+    <div id="tiles" class="col-12 col-md-8">
+        <div class="flex-container"  ng-repeat="array in map">
+            <div class="flex-item" ng-repeat="item in array" ng-click="select(item)">
+                <img src="images/{{item.imagePath}}">
+            </div>
+        </div>
+    </div>
+	<div id="menu" class="col-6 col-md-4">
 
-<div class="flex-container" ng-repeat="array in map">
-	<div class="flex-item" ng-repeat="item in array">
-		<img src="images/{{item.imagePath}}">
 	</div>
 </div>

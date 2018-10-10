@@ -1,6 +1,7 @@
 package model;
 
 import java.io.Serializable;
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -9,7 +10,7 @@ public class Dungeon implements Serializable {
 	private static final long serialVersionUID = -7230098702843143534L;
 	private String name;
 	private Tile[][] map;
-	private Map<ItemType, Integer> itemInventory = new HashMap<ItemType, Integer>();
+	private Map<ItemType, Integer> itemInventory = new EnumMap<>(ItemType.class);
 
 	public Dungeon(String name) {
 		this.name = name;
