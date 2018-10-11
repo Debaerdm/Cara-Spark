@@ -5,7 +5,7 @@ public class EmptyTile extends Tile {
 	private static final long serialVersionUID = 205427117422667286L;
 	private transient Dungeon dungeon;
 
-	EmptyTile(Dungeon dungeon, boolean isWall, int row, int col) {
+	public EmptyTile(Dungeon dungeon, boolean isWall, int row, int col) {
 		super(row, col);
 		this.dungeon = dungeon;
 		this.isWall = isWall;

@@ -52,8 +52,20 @@ app.controller("DungeonController", function($scope, $http, $interval) {
                         "row": item.row,
                         "col": item.col
                     };
-                    $http.post("/api/build", data).success(status => {
-                        console.log("BUILD !!! ["+status+"]");
+                    $http.post("/api/build", data).success(data => {
+                        if(data.code === 200) {
+                            $scope.buildLabel = data.label;
+                            $('#myModal').modal("show");
+
+                            const img = document.getElementById(data.row+"-"+data.col);
+                            img.setAttribute("src", "images/"+data.image);
+
+                            const divContent = document.getElementById("content-"+data.row+"-"+data.col);
+                            const bar = document.createElement("div");
+                            bar.classList.add("progressBar");
+
+                            divContent.appendChild(bar);
+                        }
                     }).error(function (data, status) {
                         console.log("Error " + data);
                     });
@@ -67,12 +79,18 @@ app.controller("DungeonController", function($scope, $http, $interval) {
             button.classList.add("btn", "btn-primary");
             button.addEventListener("click", () => {
                 const data = {
-                    "buildItem": "dirt",
+                    "buildItem": "DIRT",
                     "row": item.row,
                     "col": item.col
                 };
-                $http.post("/api/build", data).success(status => {
-                    console.log("BUILD !!! ["+status+"]");
+                $http.post("/api/build", data).success(data => {
+                    if(data.code === 200) {
+                        $scope.buildLabel = data.label;
+                        $('#myModal').modal("show");
+
+                        const img = document.getElementById(data.row+"-"+data.col);
+                        img.setAttribute("src", "images/"+data.image);
+                    }
                 }).error(function (data, status) {
                     console.log("Error " + data);
                 });

@@ -1,9 +1,5 @@
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import model.*;
-
-import java.lang.reflect.Type;
-import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Map;
 
 import static spark.Spark.get;
@@ -37,23 +33,40 @@ public class MountainResource {
 
 		get(API_CONTEXT+"/itemTypes", ACCEPT_TYPE, (request, response) -> ItemType.values(), JsonTransformer.getInstance());
 
+		get(API_CONTEXT+"/money", ACCEPT_TYPE, (request, response) -> Mountain.getInstance().getDungeonsMap().get(request.ip()).getMoney(), JsonTransformer.getInstance());
+
 		post(API_CONTEXT+"/build", ACCEPT_TYPE,  (request, response) -> {
-            System.out.println(request.ip());
 			Dungeon dungeon = Mountain.getInstance().getDungeonsMap().get(request.ip());
 
-            Type type = new TypeToken<Map<String, Object>>(){}.getType();
-			Map<String, Object> map = new Gson().fromJson(request.body(), type);
+			Map<String, Object> map = JsonTransformer.getInstance().parse(request.body());
 
-            System.out.println(map.toString());
+			String item = (String) map.get("item");
 
-            String item = (String) map.get("buildItem");
+			String label = "";
+			String imagePath = "";
 
-            if(!item.equals("dirt")) {
-                BuildingType buildingType = BuildingType.create(ItemType.valueOf(item));
+			if(item.equals("DIRT")) {
+				dungeon.setTile(new EmptyTile(dungeon, false, (int) map.get("row"), (int) map.get("col")));
+				Tile tile = dungeon.getTile((int) map.get("row"), (int) map.get("col"));
+				tile.update();
+				label = "Mur detruit !";
+				imagePath = tile.getImagePath();
+			} else {
+				BuildingType buildingType = BuildingType.create(ItemType.valueOf(item));
+				dungeon.build(buildingType, (int) map.get("row"), (int) map.get("col"));
+				label = "Vous avez construit une station pour recolter de la "+item.toLowerCase()+" (cout : "+buildingType.getCost()+")";
+				imagePath = buildingType.getImagePath();
+			}
 
-                dungeon.build(buildingType, (int) map.get("row"), (int) map.get("col"));
-            }
-			return 200;
+
+			Map<String, Object> result = new HashMap<>();
+			result.put("label", label);
+			result.put("image", imagePath);
+			result.put("row", map.get("row"));
+			result.put("col", map.get("col"));
+			result.put("code", 200);
+
+			return result;
 		}, JsonTransformer.getInstance());
 	}
 	

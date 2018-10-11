@@ -6,8 +6,8 @@ import java.util.TimerTask;
 public class Building extends Tile {
 
 	private static final long serialVersionUID = 1681946032634725905L;
-	private Dungeon dungeon;
 	private BuildingType type;
+	private Dungeon dungeon;
 	private boolean isWorking;
 	private int nbOfItems = 0;
 

@@ -1,3 +1,8 @@
+html, body {
+	height: 100%;
+	margin: 0;
+}
+
 .card {
 	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
 	transition: 0.3s;
@@ -11,6 +16,7 @@
 
 .container {
 	padding: 2px 16px;
+	min-height: 100%;
 }
 
 .flex-container {
@@ -45,4 +51,38 @@
 
 .dungeon-total {
 	color: white;
+}
+
+.footer{
+	color: white;
+	border-top: 8px solid crimson;
+	background-color: #c91d61;
+	background: linear-gradient(20deg,blue,crimson,purple); /*Change colors as you want*/
+	background-size: 1000% 1000% !important;
+	-webkit-animation: changeColors 30s ease infinite;
+	-moz-animation: changeColors 30s ease infinite;
+	-o-animation: changeColors 30s ease infinite;
+	animation: changeColors 30s ease infinite;
+}
+
+@-webkit-keyframes changeColors {
+	0% {
+		background-position: 0 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
+	100% {
+		background-position: 0 50%;
+	}
+}
+
+.progressBar {
+	width: 10%;
+	height: 10px;
+	background-color: #4CAF50;
+	text-align: center; /* To center it horizontally (if you want) */
+	line-height: 10px; /* To center it vertically */
+	color: white;
+	position: absolute;
 }

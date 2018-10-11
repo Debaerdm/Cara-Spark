@@ -2,18 +2,19 @@ package model;
 
 import java.io.Serializable;
 import java.util.EnumMap;
-import java.util.HashMap;
 import java.util.Map;
 
 public class Dungeon implements Serializable {
 
 	private static final long serialVersionUID = -7230098702843143534L;
 	private String name;
+	private int money;
 	private Tile[][] map;
 	private Map<ItemType, Integer> itemInventory = new EnumMap<>(ItemType.class);
 
 	public Dungeon(String name) {
 		this.name = name;
+		this.money = 60;
 		map = new Tile[Constants.MAP_SIZE][Constants.MAP_SIZE];
 		for (int row = 0 ; row < map.length ; row++) {
 			for (int col = 0 ; col < map[row].length ; col++) {
@@ -40,7 +41,11 @@ public class Dungeon implements Serializable {
 		return map;
 	}
 
-	public Tile getTile(int row, int col) {
+    public int getMoney() {
+        return money;
+    }
+
+    public Tile getTile(int row, int col) {
 		if (row >= 0 && row < map.length && col >= 0 && col < map[row].length) {
 			return map[row][col];
 		} else {
@@ -48,8 +53,16 @@ public class Dungeon implements Serializable {
 		}
 	}
 
+    public void setTile(Tile tile) {
+        if (tile.row >= 0 && tile.row < map.length && tile.col >= 0 && tile.col < map[tile.row].length) {
+            map[tile.row][tile.col] = tile;
+        }
+    }
+
 	public void build(BuildingType type, int row, int col) {
-		map[row][col] = new Building(this, type, row, col);
+	    Building building = new Building(this, type, row, col);
+		map[row][col] = building;
+		this.money -= building.getBuildingType().getCost();
 	}
 
 	public void collect(int row, int col) {
@@ -57,6 +70,7 @@ public class Dungeon implements Serializable {
 			Building tile = (Building) map[row][col];
 			ItemType type = tile.getBuildingType().getItemType();
 			int nbOfItems = tile.collect();
+			this.money += (nbOfItems*type.getGain());
 			itemInventory.put(type, itemInventory.containsKey(type) ? itemInventory.get(type) + nbOfItems : nbOfItems);
 		}
 	}
