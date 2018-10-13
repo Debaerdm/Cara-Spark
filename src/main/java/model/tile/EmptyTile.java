@@ -1,4 +1,6 @@
-package model;
+package model.tile;
+
+import model.Dungeon;
 
 public class EmptyTile extends Tile {
 

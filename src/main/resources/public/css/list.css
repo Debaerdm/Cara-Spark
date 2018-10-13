@@ -15,7 +15,7 @@ html, body {
 }
 
 .container {
-	padding: 2px 16px;
+	width: 100%;
 	min-height: 100%;
 }
 
@@ -27,18 +27,22 @@ html, body {
 #tiles {
 	width: 100%;
 	margin: auto;
+	flex-wrap: wrap;
+	order: 1;
 }
 
 #menu {
 	display: flex;
 	justify-content: center;
-	width: 100%;
-	margin: auto;
+	max-width: 100%;
+	flex-direction: row;
+	flex-wrap: wrap;
+	order: 2;
+	height: fit-content;
 }
 
 .btn {
-	margin-left: 5px;
-	margin-right: 5px;
+	margin: 5px 5px 5px 5px;
 }
 
 .flex-item {
@@ -46,43 +50,162 @@ html, body {
 }
 
 .flex-item:hover {
-	box-shadow: 0 0 15px rgba(128,35,11,.6);
+	box-shadow: 0 0 15px rgba(128,128,128,.6);
 }
 
 .dungeon-total {
 	color: white;
 }
 
-.footer{
-	color: white;
-	border-top: 8px solid crimson;
-	background-color: #c91d61;
-	background: linear-gradient(20deg,blue,crimson,purple); /*Change colors as you want*/
-	background-size: 1000% 1000% !important;
-	-webkit-animation: changeColors 30s ease infinite;
-	-moz-animation: changeColors 30s ease infinite;
-	-o-animation: changeColors 30s ease infinite;
-	animation: changeColors 30s ease infinite;
+.footer {
+    font-weight: 300;
+    position: sticky;
+    bottom: 0;
+    width: 100%;
+    line-height: 60px;
+    color: #000000;
+    background: #ffffff !important;
+    box-shadow: 0 -5px 5px -5px rgba(0,0,0,0.14), 0 7px 12px -5px rgba(0,0,0,0.15);
 }
 
-@-webkit-keyframes changeColors {
-	0% {
-		background-position: 0 50%;
-	}
-	50% {
-		background-position: 100% 50%;
-	}
-	100% {
-		background-position: 0 50%;
-	}
+.footer p{
+    margin-bottom: 0;
+}
+footer p a{
+    color: #555;
+    font-weight: 400;
+}
+
+footer p a:hover{
+    color: #9f26aa;
+    text-decoration: none;
 }
 
 .progressBar {
-	width: 10%;
-	height: 10px;
+	width: 4%;
+	height: 5px;
 	background-color: #4CAF50;
-	text-align: center; /* To center it horizontally (if you want) */
-	line-height: 10px; /* To center it vertically */
+	text-align: center;
+	line-height: 10px;
 	color: white;
 	position: absolute;
+}
+
+.mainContent {
+	display: flex;
+	flex-direction: row;
+	width: 100%;
+}
+
+.divButton {
+	width: 100%;
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+}
+
+.money-div {
+    display: flex;
+    width: 100%;
+    text-align: center;
+    background: white;
+    justify-content: center;
+    font-size: xx-large;
+    margin-bottom: 10px;
+}
+
+
+html *{
+    -webkit-font-smoothing: antialiased;
+}
+
+.navbar{
+    background: #fff;
+    color: #555;
+    padding: 10px 0 !important;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 18px 0 rgba(0,0,0,0.12), 0 7px 10px -5px rgba(0,0,0,0.15) !important;
+}
+.navbar.bg-rose{
+    color: #fff;
+    background-color: #e91e63 !important;
+    box-shadow: 0 4px 20px 0 rgba(0,0,0,0.14), 0 7px 12px -5px rgba(233,30,99,0.46);
+}
+
+.navbar.bg-dark{
+    color: #fff;
+    background: #212121!important;
+    box-shadow: 0 4px 20px 0 rgba(0,0,0,0.14), 0 7px 12px -5px rgba(33,33,33,0.46);
+}
+
+.navbar.bg-info{
+    color: #fff;
+    background: #00bcd4!important;
+    box-shadow: 0 4px 20px 0 rgba(0,0,0,0.14), 0 7px 12px -5px rgba(0,188,212,0.46);
+}
+
+.navbar.bg-primary{
+    color: #fff;
+    background: #9c27b0!important;
+    box-shadow: 0 4px 20px 0 rgba(0,0,0,0.14), 0 7px 12px -5px rgba(156,39,176,0.46);
+}
+
+.navbar.navbar-transparent{
+    color: #fff;
+    background: transparent;
+    box-shadow: none !important;
+}
+
+.navbar.navbar-transparent .navbar-brand{
+    color: #fff;
+}
+.navbar .navbar-nav .nav-item .nav-link{
+    color: white;
+    position: relative;
+    color: inherit;
+    padding: 15px;
+    font-weight: 400;
+    font-size: 12px;
+    text-transform: uppercase;
+    border-radius: 3px;
+    line-height: 20px;
+}
+
+.navbar .navbar-nav .nav-item .nav-link i{
+    font-size: 20px;
+    margin-top: -7px;
+    top: 5px;
+    position: relative;
+    margin-right: 3px;
+}
+
+.navbar .navbar-nav .nav-item .nav-link i.fa{
+
+    margin-top: -4px;
+    top: 2px;
+
+}
+.navbar .navbar-nav .nav-item.active .nav-link{
+    background-color: hsla(0,0%,100%,.1);
+    border-radius: 4px;
+}
+
+.navbar .navbar-brand{
+    color: #555;
+    font-weight: 300;
+    font-size: 18px;
+}
+
+.dungeon-list {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.join {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    flex-direction: column;
 }

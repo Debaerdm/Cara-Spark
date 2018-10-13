@@ -1,4 +1,4 @@
-package model;
+package model.item;
 
 public enum ItemType {
 
@@ -15,4 +15,5 @@ public enum ItemType {
 	public int getGain() {
 		return gain;
 	}
+
 }

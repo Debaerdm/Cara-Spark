@@ -1,5 +1,12 @@
 package model;
 
+import model.config.Constants;
+import model.item.BuildingType;
+import model.item.ItemType;
+import model.tile.Building;
+import model.tile.EmptyTile;
+import model.tile.Tile;
+
 import java.io.Serializable;
 import java.util.EnumMap;
 import java.util.Map;
@@ -54,8 +61,8 @@ public class Dungeon implements Serializable {
 	}
 
     public void setTile(Tile tile) {
-        if (tile.row >= 0 && tile.row < map.length && tile.col >= 0 && tile.col < map[tile.row].length) {
-            map[tile.row][tile.col] = tile;
+        if (tile.getRow() >= 0 && tile.getRow() < map.length && tile.getCol() >= 0 && tile.getCol() < map[tile.getRow()].length) {
+            map[tile.getRow()][tile.getCol()] = tile;
         }
     }
 

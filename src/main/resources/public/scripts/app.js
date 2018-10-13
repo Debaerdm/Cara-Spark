@@ -18,6 +18,8 @@ app.config(function ($routeProvider) {
 });
 
 app.controller("DungeonController", function($scope, $http, $interval) {
+    moneyfn($scope, $http);
+
 	$http.get("/api/dungeon").success(function (data) {
 		$scope.map = data;
 	}).error(function (data, status) {
@@ -31,6 +33,7 @@ app.controller("DungeonController", function($scope, $http, $interval) {
     });
 
 	$scope.select = item => {
+	    console.log(item);
         const menu = document.getElementById("menu");
         while (menu.firstChild) {
             menu.removeChild(menu.firstChild);
@@ -40,38 +43,50 @@ app.controller("DungeonController", function($scope, $http, $interval) {
         const titleText = document.createTextNode(item.isWall ? "Ceci est un mur, vous voulez creuser ?" : "Vous pouvez construire un building sur cette terre !");
         title.appendChild(titleText);
         menu.appendChild(title);
+        const divButton = document.createElement("div");
+        divButton.classList.add("divButton");
 
         if(!item.isWall) {
-            $scope.itemTypes.forEach(element => {
-                const button = document.createElement("button");
-                button.innerText = element;
-                button.classList.add("btn", "btn-primary");
-                button.addEventListener("click", () => {
-                    const data = {
-                        "buildItem": element,
-                        "row": item.row,
-                        "col": item.col
-                    };
-                    $http.post("/api/build", data).success(data => {
-                        if(data.code === 200) {
+            JSON.parse(JSON.stringify($scope.itemTypes), (key, value) => {
+                if(key) {
+                    const button = document.createElement("button");
+                    button.innerText = key + "\n (Cout : "+value+")";
+                    button.classList.add("btn", "btn-primary");
+                    button.addEventListener("click", () => {
+                        const data = {
+                            "buildItem": key,
+                            "row": item.row,
+                            "col": item.col
+                        };
+                        $http.post("/api/build", data).success(data => {
                             $scope.buildLabel = data.label;
-                            $('#myModal').modal("show");
+                            $scope.buildBody = data.bodyLabel;
+                            if(data.code === 200) {
+                                $('#myModal').modal('show');
 
-                            const img = document.getElementById(data.row+"-"+data.col);
-                            img.setAttribute("src", "images/"+data.image);
+                                const value = $scope.map[data.row][data.col];
+                                value.imagePath = data.image;
+                                $scope.map[data.row][data.col] = value;
 
-                            const divContent = document.getElementById("content-"+data.row+"-"+data.col);
-                            const bar = document.createElement("div");
-                            bar.classList.add("progressBar");
+                                /*const img = document.getElementById(data.row+"-"+data.col);
+                                img.setAttribute("src", "images/"+data.image);*/
 
-                            divContent.appendChild(bar);
-                        }
-                    }).error(function (data, status) {
-                        console.log("Error " + data);
+                                const divContent = document.getElementById("content-"+data.row+"-"+data.col);
+
+                                const bar = document.createElement("div");
+                                bar.classList.add("progressBar");
+
+                                divContent.appendChild(bar);
+                                moneyfn($scope, $http)
+                            } else if (data.code === 500) {
+                                $('#myModal').modal('show');
+                            }
+                        }).error(function (data, status) {
+                            console.log("Error " + data);
+                        });
                     });
-                });
-
-                menu.appendChild(button);
+                    divButton.appendChild(button);
+                }
             });
         } else {
             const button = document.createElement("button");
@@ -90,13 +105,16 @@ app.controller("DungeonController", function($scope, $http, $interval) {
 
                         const img = document.getElementById(data.row+"-"+data.col);
                         img.setAttribute("src", "images/"+data.image);
+                        moneyfn($scope, $http)
                     }
                 }).error(function (data, status) {
                     console.log("Error " + data);
                 });
             });
-            menu.appendChild(button);
+            divButton.appendChild(button);
         }
+
+        menu.appendChild(divButton);
 	}
 });
 
@@ -119,3 +137,12 @@ app.controller("MountainsList", function ($scope, $http) {
 		console.log("Error " + data);
 	});
 });
+
+const moneyfn = ($scope, $http) => {
+    $http.get('/api/money').success(data => {
+        console.log(data);
+        $scope.money = data;
+    }).error((data, status) => {
+        console.log("Error " + data);
+    })
+};

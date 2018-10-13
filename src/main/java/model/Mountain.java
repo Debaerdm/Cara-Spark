@@ -56,15 +56,6 @@ public class Mountain implements Serializable {
 
 	private Mountain(String name) {
 		this.name = name;
-		dungeonByIP.put("test1", new Dungeon("dungeon 1"));
-		dungeonByIP.put("test2", new Dungeon("dungeon 2"));
-		dungeonByIP.put("test3", new Dungeon("dungeon 3"));
-		dungeonByIP.put("test4", new Dungeon("dungeon 4"));
-		dungeonByIP.put("test5", new Dungeon("dungeon 5"));
-		dungeonByIP.put("test6", new Dungeon("dungeon 6"));
-		dungeonByIP.put("test7", new Dungeon("dungeon 7"));
-		dungeonByIP.put("test8", new Dungeon("dungeon 8"));
-		dungeonByIP.put("test9", new Dungeon("dungeon 9"));
 		serialize();
 	}
 

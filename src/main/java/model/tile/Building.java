@@ -1,4 +1,7 @@
-package model;
+package model.tile;
+
+import model.item.BuildingType;
+import model.Dungeon;
 
 import java.util.Timer;
 import java.util.TimerTask;

@@ -1,4 +1,4 @@
-package model;
+package model.tile;
 
 import java.io.Serializable;
 
@@ -14,7 +14,15 @@ public abstract class Tile implements Serializable {
 		this.row = row;
 		this.col = col;
 	}
-	
+
+	public int getCol() {
+		return col;
+	}
+
+	public int getRow() {
+		return row;
+	}
+
 	public String getImagePath() {
 		return imagePath;
 	}

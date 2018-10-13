@@ -1,4 +1,7 @@
-package model;
+package model.item;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public enum BuildingType {
 
@@ -29,6 +32,29 @@ public enum BuildingType {
 		}
 
 		return null;
+	}
+
+    public static int mineCost(ItemType itemType) {
+        switch (itemType) {
+            case GEMS:
+                return 1500;
+            case GOLD:
+                return 300;
+            case ROCK:
+                return 50;
+        }
+
+        return -1;
+    }
+
+	public static Map<ItemType, Integer> itemsValues() {
+		Map<ItemType, Integer> typeMap = new HashMap<>();
+
+		for (BuildingType buildingType : BuildingType.values()) {
+			typeMap.put(buildingType.getItemType(), buildingType.getCost());
+		}
+
+		return typeMap;
 	}
 
 	public String getImagePath() {

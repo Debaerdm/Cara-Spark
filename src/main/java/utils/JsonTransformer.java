@@ -1,9 +1,13 @@
+package utils;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.google.gson.reflect.TypeToken;
 import spark.ResponseTransformer;
 
+import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,15 +32,9 @@ public class JsonTransformer implements ResponseTransformer {
     }
 
     public Map<String, Object> parse(String json) {
-        Map<String, Object> value = new HashMap<>();
+        Type type = new TypeToken<Map<String, Object>>(){}.getType();
 
-        JsonElement jsonElement = new JsonParser().parse(json);
-        JsonObject jsonObject = jsonElement.getAsJsonObject();
-        value.put("item", jsonObject.get("buildItem").getAsString());
-        value.put("row", jsonObject.get("row").getAsInt());
-        value.put("col", jsonObject.get("col").getAsInt());
-
-        return value;
+        return gson.fromJson(json, type);
     }
 
 }
