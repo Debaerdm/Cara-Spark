@@ -10,7 +10,7 @@ public class Building extends Tile {
 
 	private static final long serialVersionUID = 1681946032634725905L;
 	private BuildingType type;
-	private Dungeon dungeon;
+	private transient Dungeon dungeon;
 	private boolean isWorking;
 	private int nbOfItems = 0;
 
