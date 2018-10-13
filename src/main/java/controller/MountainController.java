@@ -40,12 +40,18 @@ public class MountainController {
 		}), JsonTransformer.getInstance());
 
 		get(API_CONTEXT + "/dungeon", ACCEPT_TYPE, (request, response) -> Mountain.getInstance().getDungeonsMap().get(request.ip()).getMap(), JsonTransformer.getInstance());
-		
+
+		get(API_CONTEXT + "/exist", ACCEPT_TYPE, (request, response) -> (Mountain.getInstance().getDungeonsMap().get(request.ip()) != null), JsonTransformer.getInstance());
+
 		get(API_CONTEXT + "/dungeon_total", ACCEPT_TYPE, (request, response) -> Mountain.getInstance().getDungeonsMap().keySet().size(), JsonTransformer.getInstance());
 
 		get(API_CONTEXT+"/itemTypes", ACCEPT_TYPE, (request, response) -> BuildingType.itemsValues(), JsonTransformer.getInstance());
 
-		get(API_CONTEXT+"/money", ACCEPT_TYPE, (request, response) -> Mountain.getInstance().getDungeonsMap().get(request.ip()).getMoney(), JsonTransformer.getInstance());
+		get(API_CONTEXT+"/rock", ACCEPT_TYPE, (request, response) -> Mountain.getInstance().getDungeonsMap().get(request.ip()).getItemStock(ItemType.ROCK), JsonTransformer.getInstance());
+
+		get(API_CONTEXT+"/gold", ACCEPT_TYPE, (request, response) -> Mountain.getInstance().getDungeonsMap().get(request.ip()).getItemStock(ItemType.GOLD), JsonTransformer.getInstance());
+
+		get(API_CONTEXT+"/gems", ACCEPT_TYPE, (request, response) -> Mountain.getInstance().getDungeonsMap().get(request.ip()).getItemStock(ItemType.GEMS), JsonTransformer.getInstance());
 
 		post(API_CONTEXT+"/item", ACCEPT_TYPE, (request, response) -> {
             Dungeon dungeon = Mountain.getInstance().getDungeonsMap().get(request.ip());
@@ -60,7 +66,7 @@ public class MountainController {
 			ItemType itemType = ItemType.valueOf((String) map.get("buildItem"));
 			int cost = BuildingType.mineCost(itemType);
 
-			if (dungeon.getMoney() - cost < 0) {
+			if (dungeon.getItemStock(ItemType.ROCK) - cost < 0) {
                 Map<String, Object> result = new HashMap<>();
                 result.put("label", "Construction impossible !");
                 result.put("bodyLabel", "Vous avez pas assez de money !");
@@ -76,11 +82,9 @@ public class MountainController {
             System.out.println(cost);
 
 			if(cost == -1) {
-				dungeon.setTile(new EmptyTile(dungeon, false, row, col));
-				Tile tile = dungeon.getTile(row, col);
-				tile.update();
+				dungeon.dig(row, col);
 				label = "Mur detruit !";
-				imagePath = tile.getImagePath();
+				imagePath = dungeon.getTile(row, col).getImagePath();
 			} else {
 				BuildingType buildingType = BuildingType.create(itemType);
 				dungeon.build(buildingType, row, col);
@@ -99,6 +103,6 @@ public class MountainController {
 			return result;
 		}, JsonTransformer.getInstance());
 	}
-	
+
 }
 

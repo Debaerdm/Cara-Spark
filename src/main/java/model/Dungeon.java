@@ -15,13 +15,12 @@ public class Dungeon implements Serializable {
 
 	private static final long serialVersionUID = -7230098702843143534L;
 	private String name;
-	private int money;
 	private Tile[][] map;
 	private Map<ItemType, Integer> itemInventory = new EnumMap<>(ItemType.class);
 
 	public Dungeon(String name) {
 		this.name = name;
-		this.money = 60;
+		itemInventory.put(ItemType.ROCK, 60);
 		map = new Tile[Constants.MAP_SIZE][Constants.MAP_SIZE];
 		for (int row = 0 ; row < map.length ; row++) {
 			for (int col = 0 ; col < map[row].length ; col++) {
@@ -33,11 +32,7 @@ public class Dungeon implements Serializable {
 				}
 			}
 		}
-		for (Tile[] row : map) {
-			for (Tile tile : row) {
-				tile.update();
-			}
-		}
+		update();
 	}
 
 	public String getName() {
@@ -48,8 +43,8 @@ public class Dungeon implements Serializable {
 		return map;
 	}
 
-    public int getMoney() {
-        return money;
+    public int getItemStock(ItemType type) {
+        return (itemInventory.get(type) != null ? itemInventory.get(type) : 0);
     }
 
     public Tile getTile(int row, int col) {
@@ -60,16 +55,30 @@ public class Dungeon implements Serializable {
 		}
 	}
 
+    private void update() {
+    	for (Tile[] row : map) {
+			for (Tile tile : row) {
+				tile.update();
+			}
+		}
+    }
+
     public void setTile(Tile tile) {
         if (tile.getRow() >= 0 && tile.getRow() < map.length && tile.getCol() >= 0 && tile.getCol() < map[tile.getRow()].length) {
             map[tile.getRow()][tile.getCol()] = tile;
         }
     }
 
+    public void dig(int row, int col) {
+    	map[row][col] = new EmptyTile(this, false, row, col);
+    	update();
+    }
+
 	public void build(BuildingType type, int row, int col) {
 	    Building building = new Building(this, type, row, col);
 		map[row][col] = building;
-		this.money -= building.getBuildingType().getCost();
+		itemInventory.put(ItemType.ROCK, getItemStock(ItemType.ROCK) - building.getBuildingType().getCost());
+		update();
 	}
 
 	public void collect(int row, int col) {
@@ -77,8 +86,7 @@ public class Dungeon implements Serializable {
 			Building tile = (Building) map[row][col];
 			ItemType type = tile.getBuildingType().getItemType();
 			int nbOfItems = tile.collect();
-			this.money += (nbOfItems*type.getGain());
-			itemInventory.put(type, itemInventory.containsKey(type) ? itemInventory.get(type) + nbOfItems : nbOfItems);
+			itemInventory.put(type, getItemStock(type) + nbOfItems);
 		}
 	}
 
