@@ -18,23 +18,23 @@ app.config(function ($routeProvider) {
 app.controller("MountainsList", ["$scope", "$http", "$location", function ($scope, $http, $location) {
     $scope.total = 0;
     $scope.update = function() {
-        $http.get("/api/exist").success(function(data) {
+        $http.get("/api/dungeon/exist").success(function(data) {
             $scope.dungeonExist = data;
             console.log(data);
         }).error(function(data, status) {
             console.log("Error " + data);
         });
-        $http.get("/api/rock").success(function(data) {
+        $http.get("/api/dungeon/rock").success(function(data) {
             $scope.rock = data;
         }).error(function(data, status) {
             console.log("Error " + data);
         });
-        $http.get("/api/gold").success(function(data) {
+        $http.get("/api/dungeon/gold").success(function(data) {
             $scope.gold = data;
         }).error(function(data, status) {
             console.log("Error " + data);
         });
-        $http.get("/api/gems").success(function(data) {
+        $http.get("/api/dungeon/gems").success(function(data) {
             $scope.gems = data;
         }).error(function(data, status) {
             console.log("Error " + data);
@@ -44,7 +44,7 @@ app.controller("MountainsList", ["$scope", "$http", "$location", function ($scop
         }).error(function (data, status) {
             console.log("Error " + data);
         });
-        $http.get("/api/dungeon_total").success(function (data) {
+        $http.get("/api/dungeon/dungeon_total").success(function (data) {
             $scope.total = data;
         }).error(function (data, status) {
             console.log("Error " + data);
@@ -62,14 +62,14 @@ app.controller("MountainsList", ["$scope", "$http", "$location", function ($scop
     };
     $scope.myDungeon = function() {
         $scope.refresh = function() {
-            $http.get("/api/dungeon").success(function (data) {
+            $http.get("/api/dungeon/maps").success(function (data) {
                 $scope.map = data;
             }).error(function (data, status) {
                 console.log("Error " + data)
             });
         };
 
-        $http.get("/api/itemTypes").success(data => {
+        $http.get("/api/dungeon/itemTypes").success(data => {
             $scope.itemTypes = data;
         }).error((data, status) => {
             console.log("Error "+ data);
@@ -100,19 +100,12 @@ app.controller("MountainsList", ["$scope", "$http", "$location", function ($scop
                                 "row": item.row,
                                 "col": item.col
                             };
-                            $http.put("/api/build", data).success(data => {
+                            $http.put("/api/dungeon/build", data).success(data => {
                                 $scope.buildLabel = data.label;
                                 $scope.buildBody = data.bodyLabel;
                                 if(data.code === 200) {
                                     $('#myModal').modal('show');
 	                                $scope.map[data.row][data.col] = value;
-
-                                    const divContent = document.getElementById("content-"+data.row+"-"+data.col);
-
-                                    const bar = document.createElement("div");
-                                    bar.classList.add("progressBar");
-
-	                                divContent.appendChild(bar);
 	                            } else if (data.code === 500) {
 	                                $('#myModal').modal('show');
 	                            }
@@ -135,16 +128,10 @@ app.controller("MountainsList", ["$scope", "$http", "$location", function ($scop
                         "row": item.row,
                         "col": item.col
                     };
-                    $http.put("/api/build", data).success(data => {
+                    $http.put("/api/dungeon/build", data).success(data => {
                         if (data.code === 200) {
                             $scope.buildLabel = data.label;
                             $('#myModal').modal("show");
-                            const divContent = document.getElementById("content-"+data.row+"-"+data.col);
-
-                            const bar = document.createElement("div");
-                            bar.classList.add("progressBar");
-
-                            divContent.appendChild(bar);
                         } else if (data.code === 500) {
                             $('#myModal').modal('show');
                         }

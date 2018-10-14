@@ -4,9 +4,6 @@
         <div class="flex-container"  ng-repeat="array in map">
             <div class="flex-item" ng-repeat="item in array" ng-click="select(item)">
                 <img id="{{item.row}}-{{item.col}}" src="images/{{item.imagePath}}">
-                <div id="content-{{item.row}}-{{item.col}}">
-
-                </div>
             </div>
         </div>
     </div>
