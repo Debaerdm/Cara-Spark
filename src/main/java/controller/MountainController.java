@@ -34,8 +34,7 @@ public class MountainController {
 			} else {
 				System.out.println("No dungeon added, there was already one for ip : ("+request.ip()+")");
 			}
-
-			response.redirect("/#/dungeon");
+			response.redirect("/api/dungeon");
 			return 200;
 		}), JsonTransformer.getInstance());
 
@@ -47,11 +46,11 @@ public class MountainController {
 
 		get(API_CONTEXT+"/itemTypes", ACCEPT_TYPE, (request, response) -> BuildingType.itemsValues(), JsonTransformer.getInstance());
 
-		get(API_CONTEXT+"/rock", ACCEPT_TYPE, (request, response) -> Mountain.getInstance().getDungeonsMap().get(request.ip()).getItemStock(ItemType.ROCK), JsonTransformer.getInstance());
+		get(API_CONTEXT+"/rock", ACCEPT_TYPE, (request, response) -> (Mountain.getInstance().getDungeonsMap().get(request.ip()) != null) ? Mountain.getInstance().getDungeonsMap().get(request.ip()).getItemStock(ItemType.ROCK) : 0, JsonTransformer.getInstance());
 
-		get(API_CONTEXT+"/gold", ACCEPT_TYPE, (request, response) -> Mountain.getInstance().getDungeonsMap().get(request.ip()).getItemStock(ItemType.GOLD), JsonTransformer.getInstance());
+		get(API_CONTEXT+"/gold", ACCEPT_TYPE, (request, response) -> (Mountain.getInstance().getDungeonsMap().get(request.ip()) != null) ? Mountain.getInstance().getDungeonsMap().get(request.ip()).getItemStock(ItemType.GOLD) : 0, JsonTransformer.getInstance());
 
-		get(API_CONTEXT+"/gems", ACCEPT_TYPE, (request, response) -> Mountain.getInstance().getDungeonsMap().get(request.ip()).getItemStock(ItemType.GEMS), JsonTransformer.getInstance());
+		get(API_CONTEXT+"/gems", ACCEPT_TYPE, (request, response) -> (Mountain.getInstance().getDungeonsMap().get(request.ip()) != null) ? Mountain.getInstance().getDungeonsMap().get(request.ip()).getItemStock(ItemType.GEMS) : 0, JsonTransformer.getInstance());
 
 		post(API_CONTEXT+"/item", ACCEPT_TYPE, (request, response) -> {
             Dungeon dungeon = Mountain.getInstance().getDungeonsMap().get(request.ip());
@@ -69,12 +68,12 @@ public class MountainController {
 			if (dungeon.getItemStock(ItemType.ROCK) - cost < 0) {
                 Map<String, Object> result = new HashMap<>();
                 result.put("label", "Construction impossible !");
-                result.put("bodyLabel", "Vous avez pas assez de money !");
+                result.put("bodyLabel", "Vous n'avez pas assez de pierres !");
                 result.put("code", 500);
 			    return result;
             }
 
-			String label;
+			String label = "";
 			String imagePath;
 			int row = ((Double) map.get("row")).intValue();
 			int col = ((Double) map.get("col")).intValue();
@@ -83,18 +82,20 @@ public class MountainController {
 
 			if(cost == -1) {
 				dungeon.dig(row, col);
-				label = "Mur detruit !";
+				label = "Mur d\u00e9truit !";
 				imagePath = dungeon.getTile(row, col).getImagePath();
 			} else {
 				BuildingType buildingType = BuildingType.create(itemType);
 				dungeon.build(buildingType, row, col);
-				label = "Vous avez construit une station pour recolter de la "+ itemType.name().toLowerCase()+" (cout : "+buildingType.getCost()+")";
+				if (itemType == ItemType.ROCK) { label = "Vous avez construit une carri\u00e8re pour "+buildingType.getCost()+" pierres."; }
+				else if (itemType == ItemType.GOLD) { label = "Vous avez construit une mine d'or pour "+buildingType.getCost()+" pierres."; }
+				else if (itemType == ItemType.GEMS) { label = "Vous avez construit une mine de pierres pr\u00e9cieuses pour "+buildingType.getCost()+" pierres."; }
 				imagePath = buildingType.getImagePath();
 			}
 
 			Map<String, Object> result = new HashMap<>();
 			result.put("label", label);
-            result.put("bodyLabel", "Creation en cours ...");
+            result.put("bodyLabel", "Cr\u00e9ation en cours ...");
 			result.put("image", imagePath);
 			result.put("row", row);
 			result.put("col", col);
