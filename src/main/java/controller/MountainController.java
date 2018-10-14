@@ -22,8 +22,10 @@ public class MountainController {
 
 	private void setupEndpoints() {
         path(API_CONTEXT, () -> {
+            // Part 1
             get("/mountain", (request, response) -> Mountain.getInstance().getDungeonsMap(), JsonTransformer.getInstance());
 
+            // Part 3
             post( "/join", ((request, response) -> {
                 if (!Mountain.getInstance().getDungeonsMap().containsKey(request.ip())) {
                     Mountain.getInstance().addDungeon(request.ip());
@@ -43,20 +45,20 @@ public class MountainController {
                     }
                 });
 
-                get("/maps", (request, response) -> Mountain.getInstance().getDungeonsMap().get(request.ip()).getMap(), JsonTransformer.getInstance());
-
+                // Part 2
                 get("/exist", (request, response) -> (Mountain.getInstance().getDungeonsMap().get(request.ip()) != null), JsonTransformer.getInstance());
 
+                // Part 4
+                get("/maps", (request, response) -> Mountain.getInstance().getDungeonsMap().get(request.ip()).getMap(), JsonTransformer.getInstance());
+                get("/itemTypes", (request, response) -> BuildingType.itemsValues(), JsonTransformer.getInstance());
                 get("/dungeon_total", (request, response) -> Mountain.getInstance().getDungeonsMap().keySet().size(), JsonTransformer.getInstance());
 
-                get("/itemTypes", (request, response) -> BuildingType.itemsValues(), JsonTransformer.getInstance());
-
+                // Part 5
                 get("/rock", (request, response) -> (Mountain.getInstance().getDungeonsMap().get(request.ip()) != null) ? Mountain.getInstance().getDungeonsMap().get(request.ip()).getItemStock(ItemType.ROCK) : 0, JsonTransformer.getInstance());
-
                 get("/gold", (request, response) -> (Mountain.getInstance().getDungeonsMap().get(request.ip()) != null) ? Mountain.getInstance().getDungeonsMap().get(request.ip()).getItemStock(ItemType.GOLD) : 0, JsonTransformer.getInstance());
-
                 get("/gems", (request, response) -> (Mountain.getInstance().getDungeonsMap().get(request.ip()) != null) ? Mountain.getInstance().getDungeonsMap().get(request.ip()).getItemStock(ItemType.GEMS) : 0, JsonTransformer.getInstance());
 
+                // Part 6
                 put("/build",  (request, response) -> {
                     Dungeon dungeon = Mountain.getInstance().getDungeonsMap().get(request.ip());
                     Map<String, Object> map = JsonTransformer.getInstance().parse(request.body());

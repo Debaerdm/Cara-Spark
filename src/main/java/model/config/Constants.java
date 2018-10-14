@@ -7,4 +7,7 @@ public class Constants {
 	public static final String RESOURCE_FOLDER = "/public";
 	public static final String RESOURCE_IMAGES = RESOURCE_FOLDER + "/images";
 
+
+	public static final int HTTP_OK = 200;
+
 }
