@@ -1,4 +1,4 @@
-var app = angular.module("DungeonLords", [
+const app = angular.module("DungeonLords", [
     "ngCookies",
     "ngResource",
     "ngSanitize",
@@ -76,7 +76,6 @@ app.controller("MountainsList", ["$scope", "$http", "$location", function ($scop
         });
 
         $scope.select = item => {
-            console.log(item);
             const menu = document.getElementById("menu");
             while (menu.firstChild) {
                 menu.removeChild(menu.firstChild);
@@ -108,9 +107,6 @@ app.controller("MountainsList", ["$scope", "$http", "$location", function ($scop
                                     $('#myModal').modal('show');
 	                                $scope.map[data.row][data.col] = value;
 
-                                    /*const img = document.getElementById(data.row+"-"+data.col);
-                                    img.setAttribute("src", "images/"+data.image);*/
-
                                     const divContent = document.getElementById("content-"+data.row+"-"+data.col);
 
                                     const bar = document.createElement("div");
@@ -130,32 +126,6 @@ app.controller("MountainsList", ["$scope", "$http", "$location", function ($scop
 	                }
 	            });
 	        } else {
-	            const button = document.createElement("button");
-	            button.innerText = "Creuser";
-	            button.classList.add("btn", "btn-primary");
-	            button.addEventListener("click", () => {
-	                const data = {
-	                    "buildItem": "DIRT",
-	                    "row": item.row,
-	                    "col": item.col
-	                };
-	                $http.post("/api/build", data).success(data => {
-	                    if(data.code === 200) {
-	                        $scope.buildLabel = data.label;
-	                        $('#myModal').modal("show");
-                                    divContent.appendChild(bar);
-                                } else if (data.code === 500) {
-                                    $('#myModal').modal('show');
-                                }
-                                $scope.update();
-                            }).error(function (data, status) {
-                                console.log("Error " + data);
-                            });
-                        });
-                        divButton.appendChild(button);
-                    }
-                });
-            } else {
                 const button = document.createElement("button");
                 button.innerText = "Creuser";
                 button.classList.add("btn", "btn-primary");
@@ -166,10 +136,19 @@ app.controller("MountainsList", ["$scope", "$http", "$location", function ($scop
                         "col": item.col
                     };
                     $http.post("/api/build", data).success(data => {
-                        if(data.code === 200) {
+                        if (data.code === 200) {
                             $scope.buildLabel = data.label;
                             $('#myModal').modal("show");
-	                    }
+                            const divContent = document.getElementById("content-"+data.row+"-"+data.col);
+
+                            const bar = document.createElement("div");
+                            bar.classList.add("progressBar");
+
+                            divContent.appendChild(bar);
+                        } else if (data.code === 500) {
+                            $('#myModal').modal('show');
+                        }
+                        $scope.update();
                         $scope.refresh();
                     }).error(function (data, status) {
                         console.log("Error " + data);
