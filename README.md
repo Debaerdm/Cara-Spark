@@ -63,11 +63,11 @@ mvn exec:java
 équivaut à 
 ```java
  get("/hello", new Route() {
-					@Override
-					public Object handle(Request request, Response response) throws Exception {
-						return "Hello, World!";
-					}
-	}, JsonTransformer.getInstance());
+	@Override
+	public Object handle(Request request, Response response) throws Exception {
+		return "Hello, World!";
+	}
+}, JsonTransformer.getInstance());
 ```
 
 Sans faire un cours sur les lambda (vous trouverez une documentation largement suffisante en ligne), n'oubliez pas que si vous avez besoin de spécifier plusieurs instructions, les "{}" autour des instructions et les ";" séparant les instructions sont obligatoires.
