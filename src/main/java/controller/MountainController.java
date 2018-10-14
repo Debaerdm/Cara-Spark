@@ -32,7 +32,7 @@ public class MountainController {
 
             get("/mountain", (request, response) -> Mountain.getInstance().getDungeonsMap(), JsonTransformer.getInstance());
 
-            get( "/join", ((request, response) -> {
+            post( "/join", ((request, response) -> {
                 if (!Mountain.getInstance().getDungeonsMap().containsKey(request.ip())) {
                     Mountain.getInstance().addDungeon(request.ip());
                 } else {
@@ -65,7 +65,7 @@ public class MountainController {
                 return dungeon.getTile((Integer) stringObjectMap.get("row"), (Integer) stringObjectMap.get("col"));
             }, JsonTransformer.getInstance());
 
-            post("/build",  (request, response) -> {
+            put("/build",  (request, response) -> {
                 Dungeon dungeon = Mountain.getInstance().getDungeonsMap().get(request.ip());
                 Map<String, Object> map = JsonTransformer.getInstance().parse(request.body());
                 ItemType itemType = ItemType.valueOf((String) map.get("buildItem"));

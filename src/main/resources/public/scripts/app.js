@@ -51,7 +51,7 @@ app.controller("MountainsList", ["$scope", "$http", "$location", function ($scop
         });
     };
     $scope.join = function() {
-        $http.get("/api/join").success(function (_, status) {
+        $http.post("/api/join", null).success(function (_, status) {
             if(status === 200) {
                 $scope.myDungeon();
             }
@@ -100,7 +100,7 @@ app.controller("MountainsList", ["$scope", "$http", "$location", function ($scop
                                 "row": item.row,
                                 "col": item.col
                             };
-                            $http.post("/api/build", data).success(data => {
+                            $http.put("/api/build", data).success(data => {
                                 $scope.buildLabel = data.label;
                                 $scope.buildBody = data.bodyLabel;
                                 if(data.code === 200) {
@@ -135,7 +135,7 @@ app.controller("MountainsList", ["$scope", "$http", "$location", function ($scop
                         "row": item.row,
                         "col": item.col
                     };
-                    $http.post("/api/build", data).success(data => {
+                    $http.put("/api/build", data).success(data => {
                         if (data.code === 200) {
                             $scope.buildLabel = data.label;
                             $('#myModal').modal("show");

@@ -25,20 +25,14 @@ html, body {
 }
 
 #tiles {
-	width: 100%;
-	margin: auto;
-	flex-wrap: wrap;
+	width: 80%;
 	order: 1;
+    margin-left: 1em;
 }
 
 #menu {
-	display: flex;
-	justify-content: center;
-	max-width: 100%;
-	flex-direction: row;
-	flex-wrap: wrap;
+    width: 50%;
 	order: 2;
-	height: fit-content;
 }
 
 .btn {
