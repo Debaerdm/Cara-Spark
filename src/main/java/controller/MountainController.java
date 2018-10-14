@@ -67,7 +67,6 @@ public class MountainController {
                     int cost = BuildingType.mineCost(itemType);
 
                     if (dungeon.getItemStock(ItemType.ROCK) - cost < 0) {
-                        System.out.println("NOPE");
                         return HTTP_NOT_FOUND;
                     }
 
