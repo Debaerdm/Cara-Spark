@@ -40,29 +40,19 @@ mvn exec:java
   
 ### Partie 3
   Maintenant que vous avez les informations de base, nous allons nous attaquer à une requête via la méthode HTTP **post**. En appelant l'URL **"/api/join"**, nous voulons permettre à l'utilisateur de rejoindre la montagne, c'est-à-dire de lui créer un nouveau donjon, en le référençant grâce à son IP sous forme de String. S'il a déjà un donjon, il ne faudra pas en créer un nouveau. En revanche, dans tous les cas, nous souhaitons ensuite le rediriger sur l'URL **"/api/dungeon/maps"** via une requête **get**, peu importe qu'un nouveau donjon aie été créé ou que la personne aie déjà un donjon.
+  Par la même occasion, nous allons simplifier un peu les routes définies jusqu'à maintenant. Chacune d'entre elles fait appel à une transformation en Json lors de l'envoi de la réponse, c'est à dire **après** traitement. Autrement dit, **après** tous les appels aux URL, le **type** de l'objet **réponse** est spécifié comme étant du Json. La documentation devrait pouvoir vous expliquer comment faire (Point **"filters"**).
 
 ### Partie 4
   Vous l'aurez remarqué, toutes nos URL faisant appel au microservice commencent par **"/api"**. C'est un peu redondant, mais Spark permet d'aider par la création de groupe de routes. Pour cela, utilisez la méthode Spark.path() en lui donnant le préfixe commun à toutes les URL, et en donnant en deuxième paramètre une lambda de la forme () -> { } où vous pourrez déclarer vos routes dans les crochets. La documentation devrait pouvoir vous aider avec un exemple (Point **"path-group"**).
   
   Deux nouvelles méthodes sont nécessaires pour continuer. Nous voulons connaître la disposition du donjon, dans un premier temps. Il nous faut donc le récupérer. Pour cela, un appel à l'URL **"/api/maps"** via la méthode HTTP **"get"** devrait nous renvoyer une grille d'objets Tile à deux dimension (type de retour "Tile[][]") correspondant à la carte du donjon correspondant à l'IP de l'expéditeur de la requête.
-  Dans un second temps, nous aimerions 
-  - Puis vous allez faire deux méthode qui permettra de recuperer si votre donjon existe toujours. (Path : `/api/dungeon/exist`)
-  - Ensuite renvoyez le nombre total de dungeon. (Path : `/api/dungeon/dungeon_total`)
+  Dans un second temps, nous aimerions récupérer tous les types de ressources du modèle, afin de pouvoir proposer aux joueurs de construire des bâtiments afin de les produire, et cela même si nous souhaitons en ajouter d'autres plus tard. Pour cela, les requêtes à l'URL **"/api/itemTypes"** devraient renvoyer une **Map<ItemType, Integer>** contenant les différents types de ressources avec le coût du bâtiment de production associé. Si vous avez fait la partie 3, vous ne devriez normalement plus avoir à vous embêter à spécifier le type de retour comme étant du Json !
   
   ### Partie 5
-  Cette partie permettra de gerer votre donjon ! 
-    Deux méthodes get :
-      - Recuperer la map de votre donjon ! (Path: `/api/dungeon/maps`)
-      - Recuperer tous les items (type de blocs) pour les mines. (Path : `/api/dungeon/itemTypes`)
+  Les joueurs ont un donjon, mais ont également des stocks de ressources que nous souhaiterions afficher en haut, dans le header, à la place de {{rock}}, {{gold}} et {{gems}}. Pour cela, trois méthodes get aux URL respectives **"/api/dungeon/rock"**, **"/api/dungeon/gold"** et **"/api/dungeon/gems"** devraient renvoyer les valeurs de l'inventaire du donjon correspondant à l'IP de la requête. Vous devriez savoir vous débrouiller sans beaucoup plus d'aide maintenant.
       
   ### Partie 6
-  Ici vous allez recuperer vos ressources que vous disposez dans votre donjon (rock, gold, gems), c'est tres simple, il vous suffit de faire trois methodes get :
-  
-    - Pour recuperer la pierre.  (Path : `/api/dungeon/rock`)
-    - Pour recuperer l'or. (Path : `/api/dungeon/gold`)
-    - Pour recuperer les gemmes. (Path : `/api/dungeon/gems`)
-    
-  Il vous suffira de regarder les stocks disponible avec cette fonction disponible dans votre donjon : `getItemStock(ItemType type)` et de renvoyer sa valeur, 0 sinon.
+  Pour la dernière partie guidée de ce petit projet, nous allons permettre au joueur de créer les bâtiments de production. Pour cela, nous allons préciser à Spark de recevoir une méthode **put** à l'URL **""**
  
   ### Partie 7
   Une méthode **put** sera utiliser et sa sera pour build vos mine ou de creuser la terre (enlever des murs pour rendre le terrain constructible). Votre but sera de recupere le body et l'ip dans "request", de parse le body avec la méthode disponible dans JsonTransformer de recuperer le coût du parametre "buildItem" (ItemType) du body. Voir si on a assez de resource sinon vous renvoyer une 404. Recuperer du body le row et col a transformer en int (Voir java.lang.Double) creer son BuildingType, build et renvoyer une 200. (Path : `/api/dungeon/build`)
