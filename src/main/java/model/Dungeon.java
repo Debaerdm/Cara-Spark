@@ -1,5 +1,14 @@
 package model;
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.EnumMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
+
 import model.config.Constants;
 import model.item.BuildingType;
 import model.item.ItemType;
@@ -7,16 +16,13 @@ import model.tile.Building;
 import model.tile.EmptyTile;
 import model.tile.Tile;
 
-import java.io.Serializable;
-import java.util.EnumMap;
-import java.util.Map;
-
 public class Dungeon implements Serializable {
 
 	private static final long serialVersionUID = -7230098702843143534L;
 	private String name;
 	private Tile[][] map;
 	private Map<ItemType, Integer> itemInventory = new EnumMap<>(ItemType.class);
+	private transient Timer productionTime = new Timer(true);
 
 	public Dungeon(String name) {
 		this.name = name;
@@ -32,6 +38,14 @@ public class Dungeon implements Serializable {
 				}
 			}
 		}
+		productionTime.schedule(new TimerTask() {
+			@Override
+			public void run() {
+				List<Tile> mapAsList = new ArrayList<Tile>();
+				Arrays.asList(map).forEach(tileRow -> Arrays.asList(tileRow).forEach(tile -> mapAsList.add(tile)));
+				mapAsList.stream().filter(tile -> tile instanceof Building).forEach(building -> ((Building) building).produce());
+			}
+		}, 1000, 1000);
 		update();
 	}
 
@@ -81,13 +95,8 @@ public class Dungeon implements Serializable {
 		update();
 	}
 
-	public void collect(int row, int col) {
-		if (map[row][col] instanceof Building) {
-			Building tile = (Building) map[row][col];
-			ItemType type = tile.getBuildingType().getItemType();
-			int nbOfItems = tile.collect();
-			itemInventory.put(type, getItemStock(type) + nbOfItems);
-		}
+	public void collect(ItemType type, int amount) {
+		itemInventory.put(type, getItemStock(type) + amount);
 	}
 
 }

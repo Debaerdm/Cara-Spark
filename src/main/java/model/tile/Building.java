@@ -11,7 +11,6 @@ public class Building extends Tile {
 	private static final long serialVersionUID = 1681946032634725905L;
 	private BuildingType type;
 	private transient Dungeon dungeon;
-	private boolean isWorking;
 	private int nbOfItems = 0;
 
 	public Building(Dungeon dungeon, BuildingType type, int row, int col) {
@@ -26,30 +25,8 @@ public class Building extends Tile {
 		return type;
 	}
 
-	public boolean isWorking() {
-		return isWorking;
-	}
-
-	public void startWork() {
-		isWorking = true;
-		Timer timer = new Timer(true);
-		timer.schedule(new TimerTask() {
-			@Override
-			public void run() {
-				produce();
-			}
-		}, (long) type.getProductionTime());
-	}
-
 	public void produce() {
-		nbOfItems += (int) Math.floor(Math.random()*3+1);
-		isWorking = false;
-	}
-
-	public int collect() {
-		int temp = nbOfItems;
-		nbOfItems = 0;
-		return temp;
+		dungeon.collect(type.getItemType(), (int) Math.floor(Math.random()*3)+1);
 	}
 
 	public void update() {
