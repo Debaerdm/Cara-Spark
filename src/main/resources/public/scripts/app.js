@@ -106,9 +106,6 @@ app.controller("MountainsList", ["$scope", "$http", "$location", function ($scop
 	                            $scope.buildBody = data.bodyLabel;
 	                            if(data.code === 200) {
 	                                $('#myModal').modal('show');
-
-	                                const value = $scope.map[data.row][data.col];
-	                                value.imagePath = data.image;
 	                                $scope.map[data.row][data.col] = value;
 
 	                                /*const img = document.getElementById(data.row+"-"+data.col);
@@ -124,6 +121,7 @@ app.controller("MountainsList", ["$scope", "$http", "$location", function ($scop
 	                                $('#myModal').modal('show');
 	                            }
 	                            $scope.update();
+	                            $scope.refresh();
 	                        }).error(function (data, status) {
 	                            console.log("Error " + data);
 	                        });
@@ -145,9 +143,6 @@ app.controller("MountainsList", ["$scope", "$http", "$location", function ($scop
 	                    if(data.code === 200) {
 	                        $scope.buildLabel = data.label;
 	                        $('#myModal').modal("show");
-
-	                        const img = document.getElementById(data.row+"-"+data.col);
-	                        img.setAttribute("src", "images/"+data.image);
 	                    }
                         $scope.refresh();
 	                }).error(function (data, status) {
@@ -156,9 +151,7 @@ app.controller("MountainsList", ["$scope", "$http", "$location", function ($scop
 	            });
 	            divButton.appendChild(button);
 	        }
-
 	        menu.appendChild(divButton);
-	        $scope.refresh();
 		};
 	    $scope.refresh();
 		$location.path("/dungeon");

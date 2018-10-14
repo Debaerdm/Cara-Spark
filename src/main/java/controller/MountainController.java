@@ -1,20 +1,16 @@
 package controller;
 
-import model.*;
-import model.item.BuildingType;
-import model.item.ItemType;
-import model.tile.Building;
-import model.tile.EmptyTile;
-import model.tile.Tile;
-import org.slf4j.helpers.FormattingTuple;
-import utils.JsonTransformer;
+import static spark.Spark.get;
+import static spark.Spark.post;
 
-import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 
-import static spark.Spark.get;
-import static spark.Spark.post;
+import model.Dungeon;
+import model.Mountain;
+import model.item.BuildingType;
+import model.item.ItemType;
+import utils.JsonTransformer;
 
 public class MountainController {
 
@@ -74,29 +70,23 @@ public class MountainController {
             }
 
 			String label = "";
-			String imagePath;
 			int row = ((Double) map.get("row")).intValue();
 			int col = ((Double) map.get("col")).intValue();
-
-            System.out.println(cost);
 
 			if(cost == -1) {
 				dungeon.dig(row, col);
 				label = "Mur d\u00e9truit !";
-				imagePath = dungeon.getTile(row, col).getImagePath();
 			} else {
 				BuildingType buildingType = BuildingType.create(itemType);
 				dungeon.build(buildingType, row, col);
 				if (itemType == ItemType.ROCK) { label = "Vous avez construit une carri\u00e8re pour "+buildingType.getCost()+" pierres."; }
 				else if (itemType == ItemType.GOLD) { label = "Vous avez construit une mine d'or pour "+buildingType.getCost()+" pierres."; }
 				else if (itemType == ItemType.GEMS) { label = "Vous avez construit une mine de pierres pr\u00e9cieuses pour "+buildingType.getCost()+" pierres."; }
-				imagePath = buildingType.getImagePath();
 			}
 
 			Map<String, Object> result = new HashMap<>();
 			result.put("label", label);
             result.put("bodyLabel", "Cr\u00e9ation en cours ...");
-			result.put("image", imagePath);
 			result.put("row", row);
 			result.put("col", col);
 			result.put("code", 200);
