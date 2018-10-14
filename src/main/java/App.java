@@ -13,7 +13,19 @@ public class App {
 	    port(4567);
 	    staticFileLocation(RESOURCE_FOLDER);
 	    staticFileLocation(RESOURCE_IMAGES);
+
 	    new MountainController();
     }
+
+    /*
+		* TODO :
+		*	- Add collect/produce actions on the view
+		*	- Refresh dynamically the dungeon view when building something
+		*	(currently static based on return data)
+		*	- Add a view to allow inter-mountain connections
+		*	- Write the powerpoint
+		*	- Setup git repositories with several milestones
+		*	- Allow the view of someone else's dungeon (optional)
+     */
 
 }
