@@ -35,7 +35,7 @@ public class MountainController {
                     System.out.println("No dungeon added, there was already one for ip : ("+request.ip()+")");
                 }
 
-                redirect.get(API_CONTEXT + "/join", API_CONTEXT + "/dungeon/maps");
+                redirect.get(API_CONTEXT + "/join", API_CONTEXT + "/dungeon");
 
                 return HTTP_OK;
             }), JsonTransformer.getInstance());
@@ -55,9 +55,9 @@ public class MountainController {
                 get("/itemTypes", (request, response) -> BuildingType.itemsValues(), JsonTransformer.getInstance());
 
                 // Part 6
-                get("/rock", (request, response) -> (Mountain.getInstance().getDungeonsMap().get(request.ip()) != null), JsonTransformer.getInstance());
-                get("/gold", (request, response) -> (Mountain.getInstance().getDungeonsMap().get(request.ip()) != null), JsonTransformer.getInstance());
-                get("/gems", (request, response) -> (Mountain.getInstance().getDungeonsMap().get(request.ip()) != null), JsonTransformer.getInstance());
+                get("/rock", (request, response) -> Mountain.getInstance().getDungeonsMap().get(request.ip()).getItemStock(ItemType.ROCK), JsonTransformer.getInstance());
+                get("/gold", (request, response) -> Mountain.getInstance().getDungeonsMap().get(request.ip()).getItemStock(ItemType.GOLD), JsonTransformer.getInstance());
+                get("/gems", (request, response) -> Mountain.getInstance().getDungeonsMap().get(request.ip()).getItemStock(ItemType.GEMS), JsonTransformer.getInstance());
 
                 // Part 7
                 put("/build",  (request, response) -> {
