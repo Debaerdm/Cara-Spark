@@ -34,6 +34,8 @@ mvn exec:java
   
   La méthode HTTP utilisée est la méthode **get**. Le type de retour doit être une **Map<String, Dungeon>**. L'URL à laquelle la vue doit récupérer les données est **"/api/mountain"**. Les données transmises doivent être également transformées en Json (la documentation devrait vous aider pour ce dernier point).
   
+  Pour pouvoir gerer toute les requêtes en json, vous allez créer un singleton JsonTransformer implémentent une interface qui est **ResponseTransformer**, celui-ci propose une méthode **String render(Object model)** dans laquelle grâce à l'api [gson](https://google.github.io/gson/apidocs/com/google/gson/Gson.html) vous allez transformer votre model en json.
+  
 ### Partie 2
  La barre d'entête comprend de nombreux objets qui n'ont pas pu être récupérés par le biais du microservice. Nous allons d'abord nous intéresser à la valeur {{total}}. Cette valeur doit être initialisée avec le nombre de donjons présents dans la montagne. Comme pour la partie 1, faites appel à Spark pour mettre en place un retour sur l'URL **"/api/dungeon/dungeon_total"**. Cette méthode devra renvoyer un **int** comme type de retour, toujours **transformé en Json** au préalable.
  Une autre valeur intéressante serait de savoir si la personne demandant l'accès à la page possède un donjon. Nous vous laissons chercher un petit peu, notez que les méthodes get, post, put, etc... de Spark prennent en méthode la requête reçue et la réponse renvoyée, ce qui devrait vous aider à renvoyer la bonne valeur lors de l'appel à l'URL **"/api/dungeon/exist"**. N'oubliez pas la **transformation en Json** !
