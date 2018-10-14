@@ -1,7 +1,9 @@
 # Bienvenue sur la formation pour SparkJava !
 
 ## À propos 
-**Spark** est un framework utilisé en java (ne pas confondre avec le framework d'apache). Ce framework permet en autre de pouvoir facilement gérer des **microservices**. C'est-à-dire que avec une simple requête CRUD, un serveur géré avec Jetty se lance **automatiquement** et ouvre les routes adéquate !
+**Spark** est un framework utilisé en java (ne pas confondre avec le framework d'apache). Ce framework permet entre autres de pouvoir facilement gérer des **microservices**. Le framework a pour vocation de réduire au minimum le code nécessaire à la mise en place du serveur responsable des microservices.
+
+Nous vous fournirons le squelette du projet qui comportera les classes du modèle ainsi que les différents éléments permettant d'afficher les infos lors de l'accès aux pages web (html, css, js ...). Votre but sera de mettre en place le serveur qui fera le lien entre le modèle et la vue grâce au framework Spark.
 
 **Documentation : [Site SparkJava](http://sparkjava.com/documentation)**
 
@@ -24,25 +26,26 @@ mvn exec:java
 #### Enjoy !
 
 ## Réalisation :
-### A savoir
- - Tous vos modifications seront a faire dans la class `MoutainController.java`. A votre guise si vous voulez modifier votre serveur vers la fin du tp si vous avez fini avant.
- - Toutes les routes commence par "/api/**"
+### À savoir
+ - Toutes vos modifications seront à faire dans la classe `MoutainController.java`. Le modèle et la vue fonctionnent et n'ont pas besoin d'être modifiés.
 
 ### Partie 1
-  Dans cette partie votre but sera de faire fonctionner un minimun l'application. Pour cela vous aurez besoin de rajouter dans la methode `setupEndpoints()` une méthode get qui vous permettra de recupérer tous les donjons disponible dans la montagne. Aidez-vous de la class `Moutain.java` qui est un singleton. (Path : `/api/moutain`)
+  Dans cette partie, votre but sera de faire fonctionner la page d'accueil de l'application. Pour cela vous aurez besoin de rajouter dans la methode `setupEndpoints()` l'appel à Spark qui permettra de créer une route récupérant la liste des donjons de la montagne afin qu'ils puissent être affichés.
   
-  Faire la partie 2 directement après.
+  La méthode HTTP utilisée est la méthode **get**. Le type de retour doit être une **Map<String, Dungeon>**. L'URL à laquelle la vue doit récupérer les données est **"/api/mountain"**. Les données transmises doivent être également transformées en Json (la documentation devrait vous aider pour ce dernier point).
   
 ### Partie 2
-  Comment vous avez pu le constater le mieux serait de préciser le type de parametre qu'on envoie et le type de body qu'on reçoit. Pour cela il vous faudra faire un appel a la methode after de spark vous qu'il accepte que les données de type json. 
+ La barre d'entête comprend de nombreux objets qui n'ont pas pu être récupérés par le biais du microservice. Nous allons d'abord nous intéresser à la valeur {{total}}. Cette valeur doit être initialisée avec le nombre de donjons présents dans la montagne. Comme pour la partie 1, faites appel à Spark pour mettre en place un retour sur l'URL **"/api/dungeon/dungeon_total"**. Cette méthode devra renvoyer un **int** comme type de retour, toujours **transformé en Json** au préalable.
+ Une autre valeur intéressante serait de savoir si la personne demandant l'accès à la page possède un donjon. Nous vous laissons chercher un petit peu, notez que les méthodes get, post, put, etc... de Spark prennent en méthode la requête reçue et la réponse renvoyée, ce qui devrait vous aider à renvoyer la bonne valeur lors de l'appel à l'URL **"/api/dungeon/exist"**. N'oubliez pas la **transformation en Json** !
   
 ### Partie 3
-  Dans cette partie vous allez attaquer le fait de rejoindre un donjon dans la montagne ! Cette fonction sera un post sur laquel vous allez utiliser le `request.ip()` libre a vous de le faire fonctionner avec le site ! (Path : `/api/join`)
+  Maintenant que vous avez les informations de base, nous allons nous attaquer à une requête via la méthode HTTP **post**. En appelant l'URL **"/api/join"**, nous voulons permettre à l'utilisateur de rejoindre la montagne, c'est-à-dire de lui créer un nouveau donjon, en le référençant grâce à son IP sous forme de String. S'il a déjà un donjon, il ne faudra pas en créer un nouveau. En revanche, dans tous les cas, nous souhaitons ensuite le rediriger sur l'URL **"/api/dungeon/maps"** via une requête **get**, peu importe qu'un nouveau donjon aie été créé ou que la personne aie déjà un donjon.
 
 ### Partie 4
-  Ici vous allez tous simplement utliser le `void path(String path, RouteGroup routeGroup)` de spark pour creer un groupe (lire la documentation) sur la route **/dungeon** dans ce groupe vous allez d'abord faire un before `void before(Filter... filters)` qui testera si vous êtes autoriser dans la montagne ! (voir la fonction `HaltException halt(int status, String body)`).
+  Vous l'aurez remarqué, toutes nos URL faisant appel au microservice commencent par **"/api"**. C'est un peu redondant, mais Spark permet d'aider par la création de groupe de routes. Pour cela, utilisez la méthode Spark.path() en lui donnant le préfixe commun à toutes les URL, et en donnant en deuxième paramètre une lambda de la forme () -> { } où vous pourrez déclarer vos routes dans les crochets. La documentation devrait pouvoir vous aider avec un exemple (Point **"path-group"**).
   
-  Methode get :
+  Deux nouvelles méthodes sont nécessaires pour continuer. Nous voulons connaître la disposition du donjon, dans un premier temps. Il nous faut donc le récupérer. Pour cela, un appel à l'URL **"/api/maps"** via la méthode HTTP **"get"** devrait nous renvoyer une grille d'objets Tile à deux dimension (type de retour "Tile[][]") correspondant à la carte du donjon correspondant à l'IP de l'expéditeur de la requête.
+  Dans un second temps, nous aimerions 
   - Puis vous allez faire deux méthode qui permettra de recuperer si votre donjon existe toujours. (Path : `/api/dungeon/exist`)
   - Ensuite renvoyez le nombre total de dungeon. (Path : `/api/dungeon/dungeon_total`)
   
