@@ -6,8 +6,8 @@ import java.util.Map;
 public enum BuildingType {
 
 	ROCK_MINE("rock_mine.png", ItemType.ROCK, 5000, 50),
-	GOLD_MINE("gold_mine.png", ItemType.GOLD, 12000, 300),
-	GEMS_MINE("gems_mine.png", ItemType.GEMS, 16000, 1500);
+	GOLD_MINE("gold_mine.png", ItemType.GOLD, 12000, 1500),
+	GEMS_MINE("gems_mine.png", ItemType.GEMS, 16000, 10000);
 
 	private String imagePath;
 	private ItemType itemType;
@@ -37,9 +37,9 @@ public enum BuildingType {
     public static int mineCost(ItemType itemType) {
         switch (itemType) {
             case GEMS:
-                return 1500;
+                return 10000;
             case GOLD:
-                return 300;
+                return 1500;
             case ROCK:
                 return 50;
         }

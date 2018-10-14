@@ -3,9 +3,6 @@ package model.tile;
 import model.item.BuildingType;
 import model.Dungeon;
 
-import java.util.Timer;
-import java.util.TimerTask;
-
 public class Building extends Tile {
 
 	private static final long serialVersionUID = 1681946032634725905L;

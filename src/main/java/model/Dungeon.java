@@ -83,15 +83,19 @@ public class Dungeon implements Serializable {
         }
     }
 
-    public void dig(int row, int col) {
+    private void dig(int row, int col) {
     	map[row][col] = new EmptyTile(this, false, row, col);
-    	update();
     }
 
 	public void build(BuildingType type, int row, int col) {
-	    Building building = new Building(this, type, row, col);
-		map[row][col] = building;
-		itemInventory.put(ItemType.ROCK, getItemStock(ItemType.ROCK) - building.getBuildingType().getCost());
+		if (type == null || type.getItemType().equals(ItemType.DIRT)) {
+			this.dig(row, col);
+		} else {
+			Building building = new Building(this, type, row, col);
+			map[row][col] = building;
+			itemInventory.put(ItemType.ROCK, getItemStock(ItemType.ROCK) - building.getBuildingType().getCost());
+		}
+
 		update();
 	}
 

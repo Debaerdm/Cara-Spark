@@ -1,6 +1,5 @@
 package controller;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import model.Dungeon;
@@ -9,6 +8,9 @@ import model.item.BuildingType;
 import model.item.ItemType;
 import utils.JsonTransformer;
 
+import static model.config.Constants.HTTP_NOT_FOUND;
+import static model.config.Constants.HTTP_OK;
+import static model.config.Constants.HTTP_UNAUTHORIZED;
 import static spark.Spark.*;
 
 public class MountainController {
@@ -35,30 +37,29 @@ public class MountainController {
 
                 redirect.get(API_CONTEXT + "/join", API_CONTEXT + "/dungeon/maps");
 
-                return 200;
+                return HTTP_OK;
             }), JsonTransformer.getInstance());
 
             path("/dungeon", () -> {
+                // Part 4
                 before((request, response) -> {
                     if (!Mountain.getInstance().getDungeonsMap().containsKey(request.ip())) {
-                        halt(401, "You are not welcome here");
+                        halt(HTTP_UNAUTHORIZED, "You are not welcome here");
                     }
                 });
-
-                // Part 2
                 get("/exist", (request, response) -> (Mountain.getInstance().getDungeonsMap().get(request.ip()) != null), JsonTransformer.getInstance());
-
-                // Part 4
-                get("/maps", (request, response) -> Mountain.getInstance().getDungeonsMap().get(request.ip()).getMap(), JsonTransformer.getInstance());
-                get("/itemTypes", (request, response) -> BuildingType.itemsValues(), JsonTransformer.getInstance());
                 get("/dungeon_total", (request, response) -> Mountain.getInstance().getDungeonsMap().keySet().size(), JsonTransformer.getInstance());
 
                 // Part 5
+                get("/maps", (request, response) -> Mountain.getInstance().getDungeonsMap().get(request.ip()).getMap(), JsonTransformer.getInstance());
+                get("/itemTypes", (request, response) -> BuildingType.itemsValues(), JsonTransformer.getInstance());
+
+                // Part 6
                 get("/rock", (request, response) -> (Mountain.getInstance().getDungeonsMap().get(request.ip()) != null) ? Mountain.getInstance().getDungeonsMap().get(request.ip()).getItemStock(ItemType.ROCK) : 0, JsonTransformer.getInstance());
                 get("/gold", (request, response) -> (Mountain.getInstance().getDungeonsMap().get(request.ip()) != null) ? Mountain.getInstance().getDungeonsMap().get(request.ip()).getItemStock(ItemType.GOLD) : 0, JsonTransformer.getInstance());
                 get("/gems", (request, response) -> (Mountain.getInstance().getDungeonsMap().get(request.ip()) != null) ? Mountain.getInstance().getDungeonsMap().get(request.ip()).getItemStock(ItemType.GEMS) : 0, JsonTransformer.getInstance());
 
-                // Part 6
+                // Part 7
                 put("/build",  (request, response) -> {
                     Dungeon dungeon = Mountain.getInstance().getDungeonsMap().get(request.ip());
                     Map<String, Object> map = JsonTransformer.getInstance().parse(request.body());
@@ -66,38 +67,21 @@ public class MountainController {
                     int cost = BuildingType.mineCost(itemType);
 
                     if (dungeon.getItemStock(ItemType.ROCK) - cost < 0) {
-                        Map<String, Object> result = new HashMap<>();
-                        result.put("label", "Construction impossible !");
-                        result.put("bodyLabel", "Vous n'avez pas assez de pierres !");
-                        result.put("code", 500);
-                        return result;
+                        System.out.println("NOPE");
+                        return HTTP_NOT_FOUND;
                     }
 
-                    String label = "";
                     int row = ((Double) map.get("row")).intValue();
                     int col = ((Double) map.get("col")).intValue();
 
-                    if(cost == -1) {
-                        dungeon.dig(row, col);
-                        label = "Mur d\u00e9truit !";
-                    } else {
-                        BuildingType buildingType = BuildingType.create(itemType);
-                        dungeon.build(buildingType, row, col);
-                        if (itemType == ItemType.ROCK) { label = "Vous avez construit une carri\u00e8re pour "+buildingType.getCost()+" pierres."; }
-                        else if (itemType == ItemType.GOLD) { label = "Vous avez construit une mine d'or pour "+buildingType.getCost()+" pierres."; }
-                        else if (itemType == ItemType.GEMS) { label = "Vous avez construit une mine de pierres pr\u00e9cieuses pour "+buildingType.getCost()+" pierres."; }
-                    }
-                    Map<String, Object> result = new HashMap<>();
-                    result.put("label", label);
-                    result.put("bodyLabel", "Bâtiment créé !");
-                    result.put("row", row);
-                    result.put("col", col);
-                    result.put("code", 200);
+                    BuildingType buildingType = BuildingType.create(itemType);
+                    dungeon.build(buildingType, row, col);
 
-                    return result;
+                    return HTTP_OK;
                 }, JsonTransformer.getInstance());
             });
 
+            // Part 2
             after((request, response) -> response.type(ACCEPT_TYPE));
         });
 	}

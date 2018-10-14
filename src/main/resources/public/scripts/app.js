@@ -20,7 +20,6 @@ app.controller("MountainsList", ["$scope", "$http", "$location", "$interval", fu
     $scope.updateAll = function() {
         $http.get("/api/dungeon/exist").success(function(data) {
             $scope.dungeonExist = data;
-            console.log(data);
         }).error(function(data, status) {
             console.log("Error " + data);
         });
@@ -101,13 +100,8 @@ app.controller("MountainsList", ["$scope", "$http", "$location", "$interval", fu
                                 "col": item.col
                             };
                             $http.put("/api/dungeon/build", data).success(data => {
-                                $scope.buildLabel = data.label;
-                                $scope.buildBody = data.bodyLabel;
-                                if(data.code === 200) {
-                                    $('#myModal').modal('show');
-	                                $scope.map[data.row][data.col] = value;
-	                            } else if (data.code === 500) {
-	                                $('#myModal').modal('show');
+                                 if (data === "404") {
+                                     showModal($scope);
 	                            }
 	                            $scope.updateAll();
 	                            $scope.refresh();
@@ -129,11 +123,8 @@ app.controller("MountainsList", ["$scope", "$http", "$location", "$interval", fu
                         "col": item.col
                     };
                     $http.put("/api/dungeon/build", data).success(data => {
-                        if (data.code === 200) {
-                            $scope.buildLabel = data.label;
-                            $('#myModal').modal("show");
-                        } else if (data.code === 500) {
-                            $('#myModal').modal('show');
+                        if (data === "404") {
+                            showModal($scope);
                         }
                         $scope.updateAll();
                         $scope.refresh();
@@ -154,3 +145,9 @@ app.controller("MountainsList", ["$scope", "$http", "$location", "$interval", fu
 	$scope.updateAll();
 	$interval($scope.updateAll, 1000);
 }]);
+
+const showModal = $scope => {
+    $scope.buildLabel = "Construction impossible";
+    $scope.buildBody = "Vous n'avez pas assez de ressource";
+    $('#myModal').modal('show');
+};
