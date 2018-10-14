@@ -49,7 +49,7 @@ app.controller("MountainsList", ["$scope", "$http", "$location", function ($scop
 		}).error(function (data, status) {
 			console.log("Error " + data);
 		});
-	}
+	};
 	$scope.join = function() {
 		$http.get("/api/join").success(function (_, status) {
 			if(status === 200) {
@@ -67,7 +67,7 @@ app.controller("MountainsList", ["$scope", "$http", "$location", function ($scop
 			}).error(function (data, status) {
 				console.log("Error " + data)
 			});
-		}
+		};
 
 	    $http.get("/api/itemTypes").success(data => {
 	        $scope.itemTypes = data;
@@ -89,10 +89,10 @@ app.controller("MountainsList", ["$scope", "$http", "$location", function ($scop
 	            JSON.parse(JSON.stringify($scope.itemTypes), (key, value) => {
 	                if(key) {
 	                    const button = document.createElement("button");
-	                    var text;
-	                    if (key == "ROCK") { text = "Construire une carri\u00e8re"; }
-	                    else if (key == "GOLD") { text = "Construire une mine d'or"; }
-	                    else if (key == "GEMS") { text = "Construire une mine de pierres pr\u00e9cieuses"; }
+	                    let text;
+	                    if (key === "ROCK") { text = "Construire une carri\u00e8re"; }
+	                    else if (key === "GOLD") { text = "Construire une mine d'or"; }
+	                    else if (key ==="GEMS") { text = "Construire une mine de pierres pr\u00e9cieuses"; }
 	                    button.innerText = text + "\n (Co\u00fbt : "+value+" pierres)";
 	                    button.classList.add("btn", "btn-primary");
 	                    button.addEventListener("click", () => {
@@ -149,6 +149,7 @@ app.controller("MountainsList", ["$scope", "$http", "$location", function ($scop
 	                        const img = document.getElementById(data.row+"-"+data.col);
 	                        img.setAttribute("src", "images/"+data.image);
 	                    }
+                        $scope.refresh();
 	                }).error(function (data, status) {
 	                    console.log("Error " + data);
 	                });
@@ -158,12 +159,12 @@ app.controller("MountainsList", ["$scope", "$http", "$location", function ($scop
 
 	        menu.appendChild(divButton);
 	        $scope.refresh();
-		}
+		};
 	    $scope.refresh();
 		$location.path("/dungeon");
-	}
+	};
 	$scope.test = function() {
 		$scope.join();
-	}
+	};
 	$scope.update();
 }]);
