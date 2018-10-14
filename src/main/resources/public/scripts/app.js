@@ -15,9 +15,9 @@ app.config(function ($routeProvider) {
     })
 });
 
-app.controller("MountainsList", ["$scope", "$http", "$location", function ($scope, $http, $location) {
+app.controller("MountainsList", ["$scope", "$http", "$location", "$interval", function ($scope, $http, $location, $interval) {
     $scope.total = 0;
-    $scope.update = function() {
+    $scope.updateAll = function() {
         $http.get("/api/dungeon/exist").success(function(data) {
             $scope.dungeonExist = data;
             console.log(data);
@@ -55,7 +55,7 @@ app.controller("MountainsList", ["$scope", "$http", "$location", function ($scop
             if(status === 200) {
                 $scope.myDungeon();
             }
-            $scope.update();
+            $scope.updateAll();
         }).error(function (data, status) {
             console.log("Error " + data)
         })
@@ -109,7 +109,7 @@ app.controller("MountainsList", ["$scope", "$http", "$location", function ($scop
 	                            } else if (data.code === 500) {
 	                                $('#myModal').modal('show');
 	                            }
-	                            $scope.update();
+	                            $scope.updateAll();
 	                            $scope.refresh();
 	                        }).error(function (data, status) {
 	                            console.log("Error " + data);
@@ -135,7 +135,7 @@ app.controller("MountainsList", ["$scope", "$http", "$location", function ($scop
                         } else if (data.code === 500) {
                             $('#myModal').modal('show');
                         }
-                        $scope.update();
+                        $scope.updateAll();
                         $scope.refresh();
                     }).error(function (data, status) {
                         console.log("Error " + data);
@@ -151,5 +151,6 @@ app.controller("MountainsList", ["$scope", "$http", "$location", function ($scop
 	$scope.test = function() {
 		$scope.join();
 	};
-	$scope.update();
+	$scope.updateAll();
+	$interval($scope.updateAll, 1000);
 }]);

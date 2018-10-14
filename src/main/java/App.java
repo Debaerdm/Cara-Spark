@@ -20,9 +20,8 @@ public class App {
     /*
 		* TODO :
 		*	- Add collect/produce actions on the view
-		*	- Refresh dynamically the dungeon view when building something
-		*	(currently static based on return data)
 		*	- Add a view to allow inter-mountain connections
+		*	- Reduce the dynamic update overhead in app.js $scope.updateAll method
 		*	- Write the powerpoint
 		*	- Setup git repositories with several milestones
 		*	- Allow the view of someone else's dungeon (optional)

@@ -87,7 +87,7 @@ public class MountainController {
                     }
                     Map<String, Object> result = new HashMap<>();
                     result.put("label", label);
-                    result.put("bodyLabel", "Cr\u00e9ation en cours ...");
+                    result.put("bodyLabel", "Bâtiment créé !");
                     result.put("row", row);
                     result.put("col", col);
                     result.put("code", 200);
