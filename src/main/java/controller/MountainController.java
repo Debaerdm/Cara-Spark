@@ -83,6 +83,13 @@ public class MountainController {
 				else if (itemType == ItemType.GOLD) { label = "Vous avez construit une mine d'or pour "+buildingType.getCost()+" pierres."; }
 				else if (itemType == ItemType.GEMS) { label = "Vous avez construit une mine de pierres pr\u00e9cieuses pour "+buildingType.getCost()+" pierres."; }
 			}
+                Map<String, Object> result = new HashMap<>();
+                result.put("label", label);
+                result.put("bodyLabel", "Cr\u00e9ation en cours ...");
+                result.put("image", imagePath);
+                result.put("row", row);
+                result.put("col", col);
+                result.put("code", 200);
 
 			Map<String, Object> result = new HashMap<>();
 			result.put("label", label);
