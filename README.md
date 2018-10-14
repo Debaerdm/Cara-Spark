@@ -60,12 +60,18 @@ mvn exec:java
 ```java
  get("/hello", (request, response) -> "Hello, World!", JsonTransformer.getInstance());
 ```
-  Ici pas besoin de return car le fonction comprend qu'il y a qu'une ligne de code et que c'est celui la qu'il doit retourner. Par contre on peut faire cela qui est utiliser par plusieurs des méthodes de cette exercice faite atention ! Ex :
-  ```java
- post("/newUser", (request, response) -> {
-      request.session(true).attribute("user",request.body());
-      return 200; // OK
- }, JsonTransformer.getInstance());
+équivaut à 
+```java
+ get("/hello", new Route() {
+					@Override
+					public Object handle(Request request, Response response) throws Exception {
+						return "Hello, World!";
+					}
+	}, JsonTransformer.getInstance());
 ```
-  - Pensez à utiliser les méthodes de JsonTransformer pour vos méthode http et les json 
+
+Sans faire un cours sur les lambda (vous trouverez une documentation largement suffisante en ligne), n'oubliez pas que si vous avez besoin de spécifier plusieurs instructions, les "{}" autour des instructions et les ";" séparant les instructions sont obligatoires.
+
+  - Ne réinventez pas la roue : Spark met à votre disposition une instance toute faite de ResponseTransformer pour transformer les retours en Json par le biais de la méthode JsonTransformer.getInstance(), par exemple. N'hésitez pas à survoler la documentation pour trouver d'autres exemples de facilités prévues par Spark, c'est l'un des points clefs de ce framework, afin de ne vous obliger à faire que le minimum !
   
+  - Enfin, on ne le répétera jamais assez, n'hésitez pas à nous solliciter en cas de blocages, de questions, de problèmes ...
