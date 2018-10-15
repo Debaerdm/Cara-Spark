@@ -55,9 +55,9 @@ public class MountainController {
                 get("/itemTypes", (request, response) -> BuildingType.itemsValues(), JsonTransformer.getInstance());
 
                 // Part 6
-                get("/rock", (request, response) -> Mountain.getInstance().getDungeonsMap().get(request.ip()).getItemStock(ItemType.ROCK), JsonTransformer.getInstance());
-                get("/gold", (request, response) -> Mountain.getInstance().getDungeonsMap().get(request.ip()).getItemStock(ItemType.GOLD), JsonTransformer.getInstance());
-                get("/gems", (request, response) -> Mountain.getInstance().getDungeonsMap().get(request.ip()).getItemStock(ItemType.GEMS), JsonTransformer.getInstance());
+                get("/rock", (request, response) -> Mountain.getInstance().getDungeonsMap().get(request.ip()) != null ? Mountain.getInstance().getDungeonsMap().get(request.ip()).getItemStock(ItemType.ROCK) : 0, JsonTransformer.getInstance());
+                get("/gold", (request, response) -> Mountain.getInstance().getDungeonsMap().get(request.ip()) != null ? Mountain.getInstance().getDungeonsMap().get(request.ip()).getItemStock(ItemType.GOLD) : 0, JsonTransformer.getInstance());
+                get("/gems", (request, response) -> Mountain.getInstance().getDungeonsMap().get(request.ip()) != null ? Mountain.getInstance().getDungeonsMap().get(request.ip()).getItemStock(ItemType.GEMS) : 0, JsonTransformer.getInstance());
 
                 // Part 7
                 put("/build",  (request, response) -> {
